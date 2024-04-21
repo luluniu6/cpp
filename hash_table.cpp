@@ -1,19 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
-//哈希表
-//1.开放地址法
+// 哈希表
+// 1.开放地址法
 #define NullKey -32768
 typedef int DataType;
 #define NUM 10
-struct HashTable {
-	DataType* data;
+struct HashTable
+{
+	DataType *data;
 	int count;
 };
-HashTable* InitHashTable()
+HashTable *InitHashTable()
 {
-	HashTable* H = (HashTable*)malloc(sizeof(HashTable));
+	HashTable *H = (HashTable *)malloc(sizeof(HashTable));
 	H->count = 0;
-	H->data = (DataType*)malloc(sizeof(DataType) * NUM);
+	H->data = (DataType *)malloc(sizeof(DataType) * NUM);
 	for (int i = 0; i < NUM; i++)
 	{
 		H->data[i] = NullKey;
@@ -24,7 +25,7 @@ int Hash(DataType key)
 {
 	return key % NUM;
 }
-void InsertHashKey(HashTable* H, DataType key)
+void InsertHashKey(HashTable *H, DataType key)
 {
 	int address = Hash(key);
 	printf("\n插入关键字 %d, 哈希地址 = %d\n", key, address);
@@ -36,7 +37,7 @@ void InsertHashKey(HashTable* H, DataType key)
 		address = (address + d) % NUM;
 
 		// 2. 二次探测法
-		// address = (address + d * d) % NUM; 
+		// address = (address + d * d) % NUM;
 
 		d++;
 	}
@@ -45,7 +46,7 @@ void InsertHashKey(HashTable* H, DataType key)
 	H->count++;
 	printf("插入下标地址[%d], 插入成功\n\n", address);
 }
-int SearchHashKey(HashTable* H, DataType key)
+int SearchHashKey(HashTable *H, DataType key)
 {
 	int address = Hash(key);
 	int p = address;
@@ -62,7 +63,7 @@ int SearchHashKey(HashTable* H, DataType key)
 	}
 	return p;
 }
-void DisplayHashTable(HashTable* H)
+void DisplayHashTable(HashTable *H)
 {
 	int i;
 	printf("哈希表：\n");
@@ -88,7 +89,7 @@ void test1()
 {
 	int i;
 	DataType key;
-	HashTable* H = InitHashTable();
+	HashTable *H = InitHashTable();
 	printf("构建哈希表:");
 	for (i = 0; i < NUM; i++)
 	{
@@ -116,24 +117,24 @@ void test1()
 	}
 }
 
-//2.拉链法
-// 链表结点
+// 2.拉链法
+//  链表结点
 typedef struct LNode
 {
 	DataType data;
-	struct LNode* next;
-}LNode, * LinkList;
+	struct LNode *next;
+} LNode, *LinkList;
 // 哈希表
 typedef struct hashTable
 {
-	LNode* list;
+	LNode *list;
 	int count;
-}hashTable;
+} hashTable;
 // 初始化哈希表
-void InitHashTable(hashTable* H)
+void InitHashTable(hashTable *H)
 {
 	// 分配多个链表头结点空间
-	H->list = (LNode*)malloc(NUM * sizeof(LNode));
+	H->list = (LNode *)malloc(NUM * sizeof(LNode));
 	H->count = 0;
 
 	// 初始化链表头结点（头结点存储初始值，链表后序结点存储冲突值）
@@ -148,7 +149,7 @@ void InitHashTable(hashTable* H)
 // 定义哈希函数
 int Hash(DataType key);
 // 插入关键字
-void InsertHashKey(hashTable* H, DataType key)
+void InsertHashKey(hashTable *H, DataType key)
 {
 	// 根据哈希函数得到下标地址
 	int address = Hash(key);
@@ -164,8 +165,8 @@ void InsertHashKey(hashTable* H, DataType key)
 	{
 		// 若发生冲突，则在该头结点的链表下进行头插
 		// 创建新结点
-		LNode* s;
-		s = (LNode*)malloc(sizeof(LNode));
+		LNode *s;
+		s = (LNode *)malloc(sizeof(LNode));
 		s->data = key;
 		// 头插法插入
 		s->next = H->list[address].next;
@@ -177,11 +178,11 @@ void InsertHashKey(hashTable* H, DataType key)
 }
 
 // 查找关键字
-LNode* SearchHashKey(hashTable* H, DataType key)
+LNode *SearchHashKey(hashTable *H, DataType key)
 {
 	int address = Hash(key);
 	// 根据哈希地址获取对应链表的头结点
-	LNode* p = &H->list[address];
+	LNode *p = &H->list[address];
 	// 在链表中查找关键字
 	while (p != NULL && p->data != key)
 	{
@@ -191,7 +192,7 @@ LNode* SearchHashKey(hashTable* H, DataType key)
 	return p;
 }
 
-void DisplayHashTable(hashTable* H)
+void DisplayHashTable(hashTable *H)
 {
 	int i;
 	printf("哈希表：\n**********************************\n");
@@ -201,7 +202,7 @@ void DisplayHashTable(hashTable* H)
 	}
 	printf("\n");
 
-	LNode* p;
+	LNode *p;
 	int j, k = 0, flag = 1;
 
 	while (flag)
@@ -249,7 +250,7 @@ void test2()
 
 	while (1)
 	{
-		LNode* result;
+		LNode *result;
 		printf("查找关键字: ");
 		scanf("%d", &key);
 		// 查找关键字地址
@@ -267,34 +268,34 @@ void test2()
 int main()
 {
 	test1();
-	//test2();
+	// test2();
 
 	return 0;
 }
-//https://leetcode.cn/problems/valid-anagram/ 242. 有效的字母异位词
-//mine
-// class Solution {
-// public:
-//     bool isAnagram(string s, string t) {
-//         vector<int> a(26,0);
-//         for(int i=0;i<s.size();i++)
-//         {
-//             a[s[i]-'a']++;
-//         }
-//         vector<int> b(26,0);
-//         for(int i=0;i<t.size();i++)
-//         {
-//             b[t[i]-'a']++;
-//         }
-//         for(int i=0;i<26;i++)
-//         {
-//             if(a[i]!=b[i]) return false;
-//         }
-//         return true;
+// https://leetcode.cn/problems/valid-anagram/ 242. 有效的字母异位词
+// mine
+//  class Solution {
+//  public:
+//      bool isAnagram(string s, string t) {
+//          vector<int> a(26,0);
+//          for(int i=0;i<s.size();i++)
+//          {
+//              a[s[i]-'a']++;
+//          }
+//          vector<int> b(26,0);
+//          for(int i=0;i<t.size();i++)
+//          {
+//              b[t[i]-'a']++;
+//          }
+//          for(int i=0;i<26;i++)
+//          {
+//              if(a[i]!=b[i]) return false;
+//          }
+//          return true;
 
 //     }
 // };
-//leetcode官方题解
+// leetcode官方题解
 // class Solution {
 // public:
 //     bool isAnagram(string s, string t) {
@@ -314,26 +315,26 @@ int main()
 //         return true;
 //     }
 // };
-//https://leetcode.cn/problems/intersection-of-two-arrays/description/  349. 两个数组的交集
+// https://leetcode.cn/problems/intersection-of-two-arrays/description/  349. 两个数组的交集
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
-        vector<int> a(1000,0);
-        vector<int> c;
-        for(int i=0;i<nums1.size();i++)
-        {
-            a[nums1[i]%1000]++;
-        }
-        for(int i=0;i<nums2.size();i++)
-        {
-            a[nums2[i]%1000]++;
-        }
-        int j=0;
-        for(int i=0;i<1000;i++)
-        {
-            if(a[i]==2) c[j++]=a[i];
-        }
-        return c;
-    }
+	vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
+	{
+		unordered_set<int> result_set; // 存放结果，之所以用set是为了给结果集去重
+		int hash[1005] = {0};		   // 默认数值为0
+		for (int num : nums1)
+		{ // nums1中出现的字母在hash数组中做记录
+			hash[num] = 1;
+		}
+		for (int num : nums2)
+		{ // nums2中出现话，result记录
+			if (hash[num] == 1)
+			{
+				result_set.insert(num);
+			}
+		}
+		return vector<int>(result_set.begin(), result_set.end());
+	}
 };
