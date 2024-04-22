@@ -338,3 +338,39 @@ int main()
 // 		return vector<int>(result_set.begin(), result_set.end());
 // 	}
 // };
+
+// https://leetcode.cn/problems/intersection-of-two-arrays-ii/description/  350. 两个数组的交集 II
+//mine
+// class Solution
+// {
+// public:
+// 	vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
+// 	{
+// 		map<int, int> la;
+// 		vector<int> ret;
+// 		for (int i = 0; i < nums1.size(); i++)
+// 		{
+// 			la[nums1[i]]++;
+// 		}
+// 		for (int i = 0; i < nums2.size(); i++)
+// 		{
+// 			if (la.count(nums2[i]) && la[nums2[i]])
+// 			{
+// 				la[nums2[i]]--;
+// 				ret.push_back(nums2[i]);
+// 			}
+// 		}
+// 		return ret;
+// 	}
+// };
+//牛
+// class Solution {
+// public:
+//     vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+//         map<int, int> m;
+//         vector<int> res;
+//         for(auto i : nums1) ++m[i];
+//         for(auto i : nums2) if(m.count(i) && m[i]) --m[i], res.push_back(i);
+//         return res;
+//     } 
+// };
