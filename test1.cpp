@@ -15,10 +15,12 @@ namespace lala
 		// {
 		// 	strcpy(_str, str);
 		// }
-		string(char *str = "") // 构造函数
-			: _str(new char[strlen(str) + 1])
+		string(const char *str = "") // 构造函数
+			// : _str(new char[strlen(str) + 1])
 		{
-			strcpy(_str, str);
+			_size=strlen(str);
+			_capacity=_size;
+			_str=new char[];
 		}
 		string(const string &s) // string s2(s1)->深拷贝,防止浅拷贝指向同一块空间然后被析构函数释放就没了
 			: _str(new char[strlen(s._str) + 1])
@@ -57,6 +59,8 @@ namespace lala
 
 	private:
 		char *_str;
+		size_t size;
+		size_t capacity;
 	};
 	void test_string1()
 	{
