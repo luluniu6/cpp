@@ -5,12 +5,12 @@ bool check(vector<int>&arr,vector<int>&temp)
 {
     for(int i=0;i<arr.size();i++)
     {
-        if(arr[i]<temp[i]) 
-        return false;
+        if(arr[i]!=temp[i]) 
+        return arr[i]>temp[i];
     }
     return true;
 }
-int main(int argc, char const *argv[])
+int main()
 {
     int t=0;
     cin>>t;
