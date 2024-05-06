@@ -204,31 +204,269 @@ void Test()
 #include <bits/stdc++.h>
 int main()
 {
-	int n, i = 0, nums, b, c;
-	vector<int> a;
-	cin >> n;
-	for (i; i < n; i++)
-	{
-		while (cin >> nums)
-		{
-			a.push_back(nums);
-			if (cin.get() == '\n')
-				break;
-		}
-	}
-	for(i=0;i<a.size();i++)
-	{
-		for (int j = 0; j < a.size(); j++)
-		{
-			if (a[i] == a[j])
-			{
-				c = j;
-				b = a[j];
-			}
-		}
-	}
-	cout << c <<" " << b;
-	return 0;
+    int n, i = 0, nums, b, c;
+    vector<int> a;
+    cin >> n;
+    for (i; i < n; i++)
+    {
+        while (cin >> nums)
+        {
+            a.push_back(nums);
+            if (cin.get() == '\n')
+                break;
+        }
+    }
+    for(i=0;i<a.size();i++)
+    {
+        for (int j = 0; j < a.size(); j++)
+        {
+            if (a[i] == a[j])
+            {
+                c = j;
+                b = a[j];
+            }
+        }
+    }
+    cout << c <<" " << b;
+    return 0;
 }
 */
 
+// class A
+//{
+// public:
+//	A()
+//	{
+//		cout << "A()" << endl;
+//	}
+//	~A()
+//	{
+//		cout << "~A()" << endl;
+//	}
+// };
+// class B
+//{
+// public:
+//	B()
+//	{
+//		cout << "B()" << endl;
+//	}
+//	~B()
+//	{
+//		cout << "~B()" << endl;
+//	}
+// };
+// class C
+//{
+// public:
+//	C()
+//	{
+//		cout << "C()" << endl;
+//	}
+//	~C()
+//	{
+//		cout << "~C()" << endl;
+//	}
+// };
+// class D
+//{
+// public:
+//	D()
+//	{
+//		cout << "D()" << endl;
+//	}
+//	~D()
+//	{
+//		cout << "~D()" << endl;
+//	}
+// };
+// C c;
+// int main()
+//{
+//	A a;
+//	B b;
+//	static D d;
+//	return 0;
+// }
+
+// class A
+//{
+// public:
+//	A(int a = 0)
+//		: _a(a)
+//	{
+//		cout << "A():" << this << endl;
+//	}
+//	~A()
+//	{
+//		cout << "~A():" << this << endl;
+//	}
+//
+//
+// private:
+//	int _a;
+// };
+// int main()
+//{
+//	// new/delete 和 malloc/free最大区别是 new/delete对于【自定义类型】除了开空间
+//	//还会调用构造函数和析构函数
+//	A* p1 = (A*)malloc(sizeof(A));
+//	A* p2 = new A(1);
+//	free(p1);
+//	delete p2;
+//	// 内置类型是几乎是一样的
+//	int* p3 = (int*)malloc(sizeof(int)); // C
+//	int* p4 = new int;
+//	free(p3);
+//	delete p4;
+//	A* p5 = (A*)malloc(sizeof(A) * 10);
+//	A* p6 = new A[10];
+//	free(p5);
+//	delete[] p6;
+//	return 0;
+// }
+
+// struct ListNode
+//{
+//	int _val;
+//	ListNode* next;
+//	ListNode* prev;
+//	ListNode(int val = 0)
+//		:_val(val)
+//		,next(nullptr)
+//		,prev(nullptr)
+//	{}
+//	~ListNode()
+//	{
+//		cout << "~ListNode()" << endl;
+//	}
+// };
+// int main()
+//{
+//	ListNode* node = new ListNode;
+//	ListNode* node1 = new ListNode(5);
+//	delete node;
+//	delete node1;
+//	return 0;
+// }
+
+// c——>c++
+// 1.忘记定义和初始化------>构造函数和析构函数
+// 2.没有封装谁都可以修改结构体的数据----->类+访问限定符
+// 3.如果想同时定义两个栈，一个存int一个存double，做不到----->模板
+
+typedef int STDataType;
+typedef double STDataType;
+
+template <typename T>
+class Stack
+{
+public:
+    Stack(int capacity = 4)
+    {
+        cout << "Stack(int capacity = )" << capacity << endl;
+
+        _a = (T *)malloc(sizeof(T) * capacity);
+        if (_a == nullptr)
+        {
+            perror("malloc fail");
+            exit(-1);
+        }
+
+        _top = 0;
+        _capacity = capacity;
+    }
+
+    ~Stack()
+    {
+        cout << "~Stack()" << endl;
+
+        free(_a);
+        _a = nullptr;
+        _top = _capacity = 0;
+    }
+
+    void Push(const T &x)
+    {
+        // ....
+        // 扩容
+        _a[_top++] = x;
+    }
+
+private:
+    T *_a;
+    int _top;
+    int _capacity;
+};
+
+int main()
+{
+    // 类模板一般没有推演时机，函数模板实参传递形参，推演模板参数
+    // 显示实例化
+    // 他们是同一个类模板实例化出来的
+    // 但是模板参数不同，他们就是不同类型
+    Stack<double> st1; // double
+    st1.Push(1.1);     // 实际上也是两个参数，有一个是隐含的this指针
+
+    Stack<int> st2; // int
+    st2.Push(1);
+
+    return 0;
+}
+
+// #define N  10
+//
+// namespace haha
+//{
+//	template<class T>
+//	class array
+//	{
+//	public:
+//		T& operator[](size_t i)
+//		{
+//			assert(i < N);
+//			return _a[i];
+//		}
+//	private:
+//		T _a[N];
+//	};
+// }
+//
+// int main()
+//{
+//	//int a2[10];
+//	//a2[20] = 0;
+//	//a2[10];
+//
+//	haha::array<int> a1;
+//	for (size_t i = 0; i < N; ++i)
+//	{
+//		// a1.operator[](i)= i;
+//
+//		a1[i] = i;
+//	}
+//
+//	for (size_t i = 0; i < N; ++i)
+//	{
+//		// a1.operator[](i)
+//		cout << a1[i] << " ";
+//	}
+//	cout << endl;
+//
+//	for (size_t i = 0; i < N; ++i)
+//	{
+//		a1[i]++;
+//	}
+//
+//	for (size_t i = 0; i < N; ++i)
+//	{
+//		cout << a1[i] << " ";
+//	}
+//	cout << endl;
+//
+//	//a1[20];
+//	//a1[10];
+//
+//
+//	return 0;
+// }

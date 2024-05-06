@@ -16,11 +16,12 @@ namespace lala
 		// 	strcpy(_str, str);
 		// }
 		string(const char *str = "") // 构造函数
-			// : _str(new char[strlen(str) + 1])
+									 // : _str(new char[strlen(str) + 1])
 		{
-			_size=strlen(str);
-			_capacity=_size;
-			_str=new char[];
+			_size = strlen(str);
+			_capacity = _size;
+			_str = new char[_capacity + 1];
+			strcpy(_str, str);
 		}
 		string(const string &s) // string s2(s1)->深拷贝,防止浅拷贝指向同一块空间然后被析构函数释放就没了
 			: _str(new char[strlen(s._str) + 1])
@@ -43,6 +44,7 @@ namespace lala
 		{
 			delete[] _str;
 			_str = nullptr;
+			_size = _capacity = 0;
 		}
 		const char *c_str()
 		{
@@ -52,15 +54,23 @@ namespace lala
 		{
 			return strlen(_str);
 		}
-		char &operator[](size_t i)
+		size_t capacity()
 		{
-			return _str[i];
+			return _capacity;
+		}
+		const char &operator[](size_t i) const
+		{
+			assert(i < _size) return _str[i];
+		}
+		const char *c_str()
+		{
+			return _str;
 		}
 
 	private:
 		char *_str;
-		size_t size;
-		size_t capacity;
+		size_t _size;	  // 已经有多少个有效字符
+		size_t _capacity; // 能存多少个有效字符,\0不是有效字符
 	};
 	void test_string1()
 	{
