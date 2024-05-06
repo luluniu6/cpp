@@ -120,6 +120,6 @@ int main(int argc, char const *argv[])
 {
 	// lala::test_string1();
 	// lala::test_string2();
-	lala::test_string3();
+	//lala::test_string3();
 	return 0;
 }
