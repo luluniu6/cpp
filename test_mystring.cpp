@@ -15,18 +15,7 @@ namespace lala
 		{
 			return _str + _size;
 		}
-		// string()//两种构造但被下面的缺省值的代替
-		// 	: _str(new char[1])
-		// {
-		// 	_str[0]='\0';
-		// }
-		// string(char *str)
-		// 	: _str(new char[strlen(str) + 1])
-		// {
-		// 	strcpy(_str, str);
-		// }
 		string(const char *str = "") // 构造函数
-			 // : _str(new char[strlen(str) + 1])
 		{
 			_size = strlen(str);
 			_capacity = _size;
@@ -34,20 +23,20 @@ namespace lala
 			strcpy(_str, str);
 		}
 		string(const string &s) // string s2(s1)->深拷贝,防止浅拷贝指向同一块空间然后被析构函数释放就没了
-			: _str(new char[strlen(s._str) + 1])
+			: _str(nullptr), _size(0), _capacity(0)
 		{
-			strcpy(_str, s._str);
+			string tmp(s._str);
+			swap(tmp); // this->swap(tmp);
 		}
-		string &operator=(const string &s) // 实现s1=s2的赋值
+		void swap(string &s)
 		{
-			if (this != &s) // 防止s1=s1的赋值
-			{
-				char *tmp = new char[strlen(s._str) + 1];
-				strcpy(tmp, s._str);
-				delete[] _str;
-				_str = tmp;
-			}
-
+			::swap(_str, s._str);
+			::swap(_size, s._size);
+			::swap(_capacity, s._capacity);
+		}
+		string &operator=(string &s) // 实现s3=s1的赋值
+		{
+			swap(s); // this->swap(s);
 			return *this;
 		}
 		~string() // 析构函数
@@ -99,6 +88,7 @@ namespace lala
 			_str[_size] = ch;
 			++_size;
 			_str[_size] = '\0';
+			// insert(_size,ch);//或者直接调用insert
 		}
 		void resize(size_t n, char ch = '\0')
 		{
@@ -130,6 +120,7 @@ namespace lala
 			}
 			strcpy(_str + _size, str);
 			_size += len;
+			// insert(_size,str);//或者直接调insert
 		}
 		string &operator+=(char ch)
 		{
@@ -150,7 +141,7 @@ namespace lala
 				reserve(newcapacity);
 			}
 			int end = _size;
-			while (end >= pos)
+			while (end >= (int)pos)
 			{
 				_str[end + 1] = _str[end];
 				--end;
@@ -168,7 +159,7 @@ namespace lala
 				reserve(_size + len);
 			}
 			int end = _size;
-			while (end >= pos)
+			while (end >= (int)pos)
 			{
 				_str[end + len] = _str[end];
 				end--;
@@ -305,14 +296,10 @@ namespace lala
 	{
 		string s1("hello");
 		string s2(s1);
-		for (size_t i = 0; i < s1.size(); i++)
-		{
-			cout << s1[i] << " ";
-		}
-		for (size_t i = 0; i < s2.size(); i++)
-		{
-			cout << s2[i] << " ";
-		}
+		string s3 = s1;
+		cout << s1 << endl;
+		cout << s2 << endl;
+		cout << s3 << endl;
 	}
 	void test_string3()
 	{
@@ -425,61 +412,106 @@ namespace lala
 int main()
 {
 	// lala::test_string1();
-	// lala::test_string2();
+	lala::test_string2();
 	// lala::test_string3();
 	// lala::test_string4();
 	// lala::test_string5();
 	// lala::test_string6();
 	// lala::test_string7();
 	// lala::test_string8();
-	lala::test_string9();
+	// lala::test_string9();
 
 	return 0;
 }
 
-// namespace lala_easy
-// {
-// 	//面试限时实现一个String类，不可能具备std：string的功能
-// 	//但至少要求能正确管理资源-->构造+析构+拷贝+operator=
-// 	class Sting
-// 	{
-// 	public:
-// 		string(const char* str="")
-// 			:_str(new char[strlen(str)+1])
-// 		{
-// 			strcpy(_str,str);
-// 		}
-// 		string(const string& s)//深拷贝-现代写法
-// 			:_str(nullptr)
-// 		{
-// 			string tmp(s._str);
-// 			swap(_str,tmp._str);
-// 		}
-// 		string& operator=(const string& s)
-// 		{
-// 			if(this!=&s)
-// 			{
-// 				string tmp(s);
-// 				swap(_str,tmp._str);
-// 			}
-// 			return *this;
-// 		}
-// 		size_t size() const
-// 		{
-// 			return strlen(_str);
-// 		}
-// 		char &operator[](size_t i)
-// 		{
-// 			assert(i < _size);
-// 			return _str[i];
-// 		}
-// 		~string()
-// 		{
-// 			delete[] _str;
-// 			_str=nullptr;
-// 		}
-// 	private:
-// 		char* _str;
+namespace lala_easy
+{
+	// 面试限时实现一个String类，不可能具备std：string的功能
+	// 但至少要求能正确管理资源-->构造+析构+拷贝+operator=
+	class String
+	{
+	public:
+		String(const char *str = "") // 构造函数
+			: _str(new char[strlen(str) + 1])
+		{
+			strcpy(_str, str);
+		}
+		// String(const String &s)// 深拷贝-传统写法
+		// :_str(new char[strlen(s._str)+1])
+		// {
+		// 	strcpy(_str,s._str);
+		// }
+		String(const String &s) // 深拷贝-现代写法
+			: _str(nullptr)
+		{
+			String tmp(s._str); // 调用构造函数，不能写成括号里面是s不然就相当于调拷贝构造会死循环
+			swap(_str, tmp._str);
+		}
+		// String& operator=(const String& s)// s3=s1 传统写法
+		// {
+		// 	if(this!=&s)
+		// 	{
+		// 		char* tmp=new char[strlen(s._str)+1];
+		// 		strcpy(tmp,s._str);
+		// 		delete[] _str;
+		// 		_str=tmp;
+		// 	}
+		// 	return *this;
+		// }
+		// String& operator=(const String& s)// s3=s1 现代写法1
+		// {
+		// 	if(this!=&s)
+		// 	{
+		// 		String tmp(s);
+		// 		swap(_str,tmp._str);
+		// 	}
+		// 	return *this;
+		// }
+		String &operator=(String s) // s3=s1 现代写法最终版
+		{
+			swap(_str, s._str);
+			return *this;
+		}
+		size_t size() const
+		{
+			return strlen(_str);
+		}
+		const char &operator[](size_t i) const
+		{
+			return _str[i];
+		}
+		char &operator[](size_t i)
+		{
+			return _str[i];
+		}
+		~String()
+		{
+			delete[] _str;
+			_str = nullptr;
+		}
 
-// 	};
+	private:
+		char *_str;
+	};
+	ostream &operator<<(ostream &out, const String &s)
+	{
+		for (size_t i = 0; i < s.size(); i++)
+		{
+			out << s[i];
+		}
+		return out;
+	}
+	void test_String()
+	{
+		String s1("hello");
+		String s2(s1);
+		String s3 = s1;
+		cout << s1 << endl;
+		cout << s2 << endl;
+		cout << s3 << endl;
+	}
+}
+// int main()
+// {
+// 	lala_easy::test_String();
 // }
