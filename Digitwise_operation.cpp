@@ -21,6 +21,16 @@ using namespace std;
 // 2.a ^ a = 0;
 // 3.a ^ b ^ c = a ^ (b ^ c);
 
+// https://leetcode.cn/problems/power-of-two/description/ 231. 2 的幂
+// class Solution
+// {
+// public:
+//     bool isPowerOfTwo(int n)
+//     {
+//         return n > 0 && (n & (n - 1)) == 0;
+//     }
+// };
+
 // https://leetcode.cn/problems/number-of-1-bits/description/ 191. 位1的个数
 //  class Solution {
 //  public:
@@ -103,10 +113,59 @@ using namespace std;
 // };
 
 // https://leetcode.cn/problems/single-number-ii/description/ 137. 只出现一次的数字 II
-class Solution
-{
+//1.哈希表
+// class Solution
+// {
+// public:
+//     int singleNumber(vector<int> &nums)
+//     {
+//         unordered_map<int,int> freq;
+//         for(int i=0;i<nums.size();i++)
+//         {
+//             freq[nums[i]]++;
+//         }
+//         int ans=0;
+//         for (auto [num, occ]: freq) {
+//             if (occ == 1) {
+//                 ans = num;
+//                 break;
+//             }
+//         }
+//         return ans;
+//     }
+// };
+//2.位运算
+// class Solution {
+// public:
+//     int singleNumber(vector<int>& nums) {
+//         int ans=0;
+//         for(int i=0;i<32;i++)
+//         {
+//             int total=0;
+//             for(int j=0;j<nums.size();j++)
+//             {
+//                 total+=nums[j]>>i&1;
+//             }
+//             if(total%3!=0)
+//             {
+//                 ans|=1<<i;
+//             }
+//         }
+//         return ans;
+//     }
+// };
+
+//https://leetcode.cn/problems/power-of-four/description/  342. 4的幂
+class Solution {
 public:
-    int singleNumber(vector<int> &nums)
-    {
+    bool isPowerOfFour(int n) {
+
+    }
+};
+//https://leetcode.cn/problems/power-of-three/description/  326. 3 的幂
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+
     }
 };
