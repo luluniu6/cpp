@@ -74,8 +74,8 @@ namespace lala
         typedef __list_node<T> Node;
 
     public:
-        typedef __list_iterator<T, T&, T*> iterator;
-        typedef __list_iterator<T, const T&, const T*> const_iterator;
+        typedef __list_iterator<T, T &, T *> iterator;
+        typedef __list_iterator<T, const T &, const T *> const_iterator;
 
         iterator begin()
         {
@@ -102,28 +102,50 @@ namespace lala
         }
         void push_back(const T &x)
         {
-            Node *tail = _head->_prev;
+            // Node *tail = _head->_prev;
+            // Node *newnode = new Node(x);
+            // tail->_next = newnode;
+            // newnode->_prev = tail;
+            // newnode->_next = _head;
+            // _head->_prev = newnode;
+            // // 结构设计的优势，有没有节点插入都一样
+            insert(end(), x);
+        }
+        void pop_back();
+        void push_front(const T &x)
+        {
+            insert(begin(), x);
+        }
+        void pop_front();
+        void erase(iterator pos)
+        {
+            
+        }
+        void insert(iterator pos, const T &x)
+        {
+            Node *cur = pos._node;
+            Node *prev = cur->_prev;
             Node *newnode = new Node(x);
-            tail->_next = newnode;
-            newnode->_prev = tail;
-            newnode->_next = _head;
-            _head->_prev = newnode;
-            // 结构设计的优势，有没有节点插入都一样
+
+            prev->_next = newnode;
+            newnode->_prev = prev;
+            newnode->_next = cur;
+            cur->_prev = newnode;
         }
 
     private:
         Node *_head;
     };
 
-    void print_list(const list<int>& lt)
+    void print_list(const list<int> &lt)
     {
-        list<int>::const_iterator it =lt.begin();
-        while(it!=lt.end())
+        list<int>::const_iterator it = lt.begin();
+        while (it != lt.end())
         {
-            cout<<*it<<" ";
+            cout << *it << " ";
             it++;
         }
-        cout<<endl;
+        cout << endl;
     }
     void test_list1()
     {
@@ -153,7 +175,7 @@ namespace lala
 }
 int main()
 {
-    //lala::test_list1();
+    // lala::test_list1();
     lala::test_list2();
     return 0;
 }
