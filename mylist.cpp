@@ -100,6 +100,54 @@ namespace lala
             _head->_next = _head;
             _head->_prev = _head;
         }
+        list(const list<T>& lt)
+        {
+            _head=new Node;
+            _head->_next=_head;
+            _head->_prev=_head;
+
+            // const_iterator it=lt.begin();
+            // while(it !=lt.end())
+            // {
+            //     push_back(*it);
+            //     ++it;
+            // }
+            for(auto e: lt)
+            {
+                push_back(e);
+            }
+        }
+        // list<T>& operator=(const list<T>& lt)
+        // {
+        //     if(this!=&lt)
+        //     {
+        //         clear();
+        //         for(auto e:lt)
+        //         {
+        //             push_back(e);
+        //         }
+        //     }
+        //     return *this;
+        // }
+        list<T>& operator=(list<T> lt)
+        {
+            swap(_head,lt._head);
+            return *this;
+        }
+        ~list()
+        {
+            clear();
+            delete _head;
+            _head=nullptr;
+        }
+        void clear()
+        {
+            iterator it=begin();
+            while(it!=end())
+            {
+                erase(it++);
+            }
+        }
         void push_back(const T &x)
         {
             // Node *tail = _head->_prev;
@@ -111,15 +159,28 @@ namespace lala
             // // 结构设计的优势，有没有节点插入都一样
             insert(end(), x);
         }
-        void pop_back();
+        void pop_back()
+        {
+            //erase(iterator(_head->_prev));
+            erase(--end());
+        }
         void push_front(const T &x)
         {
             insert(begin(), x);
         }
-        void pop_front();
+        void pop_front()
+        {
+            erase(begin());
+        }
         void erase(iterator pos)
         {
-            
+            assert(pos!=end());
+            Node* cur=pos._node;
+            Node* prev=cur->_prev;
+            Node* next=cur->_next;
+            delete cur;
+            prev->_next=next;
+            next->_prev=prev;
         }
         void insert(iterator pos, const T &x)
         {
@@ -171,11 +232,40 @@ namespace lala
         lt.push_back(3);
         lt.push_back(4);
         print_list(lt);
+        lt.pop_back();
+        lt.pop_front();
+        print_list(lt);
+        lt.clear();
+        lt.push_back(250);
+        lt.push_back(520);
+        print_list(lt);
+    }
+    void test_list3()
+    {
+        list<int> lt1;
+        lt1.push_back(1);
+        lt1.push_back(2);
+        lt1.push_back(3);
+        lt1.push_back(4);
+        print_list(lt1);
+
+        list<int> lt2(lt1);
+        print_list(lt2);
+
+        list<int> lt3;
+        lt3.push_back(10);
+        lt3.push_back(20);
+        lt3.push_back(30);
+        lt3.push_back(40);
+        lt1=lt3;
+        print_list(lt1);
+
     }
 }
 int main()
 {
     // lala::test_list1();
-    lala::test_list2();
+    // lala::test_list2();
+    lala::test_list3();
     return 0;
 }
