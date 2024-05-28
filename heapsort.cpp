@@ -14,6 +14,58 @@
 #include <vector>
 using namespace std;
 
+//堆的逻辑结构是一颗完全二叉树
+//堆的物理结构是一个数组
+//大堆:堆顶数据最大
+//小堆:堆顶数据最小
+//数组下标性质
+//leftchild = parent * 2 + 1;
+//rightchild = parent * 2 + 2;
+//parent = (child - 1) / 2;
+
+//建大堆，向下调整算法->最多调整高度次O(logN)，前提左右子树都是大堆
+void AdjustDown(int* a, int n, int root)//时间复杂度O(N)
+{
+	int parent = root;
+	int child = parent * 2 + 1;//默认为左孩子
+	while (child < n)
+	{
+		if (child + 1 < n && a[child + 1] > a[child])
+		{
+			child++;//变成右孩子
+		}
+		//使得child一定是左右孩子中大的那个
+		if (a[parent] < a[child])
+		{
+			swap(a[parent], a[child]);
+			parent = child;
+			child = parent * 2 + 1;
+		}
+		else
+			break;
+	}
+}
+//整体时间复杂度O(N*logN)
+void HeapSort(int* a, int n)
+{
+	//建堆//升序排序建大堆 
+	for (int i = (n - 1 - 1) / 2; i >= 0; i--)//从倒数第一个非叶子结点开始调整，即从最后一个结点父亲开始
+	{
+		//建堆的时间复杂度为O(N)
+		AdjustDown(a, n, i);//n个数，i表示每次调整的开头位置,然后向下调整
+	}
+
+	int end = n - 1;
+	while (end > 0)
+	{
+		swap(a[0], a[end]);//交换第一个数(最大值)与最后一个数,这样最大的数放在数组最后
+		AdjustDown(a, end, 0);//每次排好最大值后,需要排的数减少1,待排序的有end个数,0表示从第一个parent开始向下调整
+		--end;
+	}
+}
+
+//另一种写法
+//维护堆的性质
 void heapify(int *a, int n, int i)
 {
 	int largest = i;
@@ -59,7 +111,7 @@ int main(int argc, char const *argv[])
 	}
 	return 0;
 }
-
+//优先队列是堆
 // https://leetcode.cn/problems/kth-largest-element-in-an-array/description/ 215. 数组中的第K个最大元素
 class Solution
 {
