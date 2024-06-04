@@ -21,3 +21,22 @@ public:
         return len == INT_MAX ? 0 : len;
     }
 };
+//https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/  3. 无重复字符的最长子串
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int hash[128]={0};
+        int ret=0;
+        for(int l=0,r=0;r<s.length();r++)
+        {
+            hash[s[r]]++;
+            while(hash[s[r]]>1)
+            {
+                hash[s[l]]--;
+                l++;
+            }
+            ret=max(ret,r-l+1);
+        }
+        return ret;
+    }
+};
