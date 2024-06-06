@@ -60,18 +60,18 @@ public:
             return true;
         }
     }
-    bool Find(const K&key)
+    bool Find(const K &key)
     {
-        Node* cur=_root;
-        while(cur)
+        Node *cur = _root;
+        while (cur)
         {
-            if(cur->_key<key)
+            if (cur->_key < key)
             {
-                cur=cur->_right;
+                cur = cur->_right;
             }
-            else if(cur->_key>key)
+            else if (cur->_key > key)
             {
-                cur=cur->_left;
+                cur = cur->_left;
             }
             else
             {
@@ -80,54 +80,71 @@ public:
         }
         return false;
     }
-    bool Erase(const K&key)
+    bool Erase(const K &key)
     {
-        Node* parent=nullptr;
-        Node* cur=_root;
-        while(cur)
+        Node *parent = nullptr;
+        Node *cur = _root;
+        while (cur)
         {
-            if(cur->_key<key)
+            if (cur->_key < key)
             {
-                parent=cur;
-                cur=cur->_right;
+                parent = cur;
+                cur = cur->_right;
             }
-            else if(cur->_key>key)
+            else if (cur->_key > key)
             {
-                parent=cur;
-                cur=cur->_left;
+                parent = cur;
+                cur = cur->_left;
             }
             else
             {
-                //找到了，开始删除
-                if(cur->_left==nullptr)
+                // 找到了，开始删除
+                if (cur->_left == nullptr)
                 {
-                    if(parent->_right==cur)
-                        parent->_right=cur->_right;
+                    if (cur == _root)
+                    {
+                        _root = cur->_right;
+                    }
                     else
-                        parent->_left=cur->_right;
+                    {
+                        if (parent->_right == cur)
+                            parent->_right = cur->_right;
+                        else
+                            parent->_left = cur->_right;
+                    }
                     delete cur;
                 }
-                else if(cur->_right==nullptr)
+                else if (cur->_right == nullptr)
                 {
-                    if(parent->_left==cur)
-                        parent->_left=cur->_left;
+                    if (cur == _root)
+                    {
+                        _root = cur->_left;
+                    }
                     else
-                        parent->_right=cur->_left;
+                    {
+                        if (parent->_left == cur)
+                            parent->_left = cur->_left;
+                        else
+                            parent->_right = cur->_left;
+                    }
                     delete cur;
                 }
                 else
                 {
-                    Node*rightMinParent=nullptr;
-                    Node* rightMin=cur->_right;
-                    while(rightMin->_left)
+                    Node *rightMinParent = cur;
+                    Node *rightMin = cur->_right;
+                    while (rightMin->_left)
                     {
-                        rightMinParent=rightMin;
-                        rightMin=rightMin->_left;
+                        rightMinParent = rightMin;
+                        rightMin = rightMin->_left;
                     }
-                    //替代删除
-                    cur->_key=rightMin->_key;
-                    //转换成删除rightMin
-                    rightMinParent->_left=rightMin->_right;
+                    // 替代删除
+                    cur->_key = rightMin->_key;
+                    // 转换成删除rightMin(rightMin是左为空，父亲指向他的右)
+                    if (rightMin == rightMinParent->_left)
+                        rightMinParent->_left = rightMin->_right;
+                    else
+                        rightMinParent->_right = rightMin->_right;
                     delete rightMin;
                 }
                 return true;
@@ -162,13 +179,21 @@ void TestBSTree()
     }
     t.InOrder();
     t.Erase(7);
+    t.Erase(1);
+    t.Erase(3);
+    t.Erase(4);
+    t.Erase(5);
+    t.Erase(6);
+    t.Erase(0);
+    t.Erase(8);
+    t.Erase(9);
+    t.InOrder();
+    t.Erase(2);
     t.InOrder();
     // t.Erase(8);
     // t.InOrder();
     // t.Erase(5);
     // t.InOrder();
-
-
 }
 int main()
 {
