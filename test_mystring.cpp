@@ -34,7 +34,7 @@ namespace lala
 			::swap(_size, s._size);
 			::swap(_capacity, s._capacity);
 		}
-		string &operator=(string &s) // 实现s3=s1的赋值
+		string &operator=(string s) // 实现s3=s1的赋值
 		{
 			swap(s); // this->swap(s);
 			return *this;
