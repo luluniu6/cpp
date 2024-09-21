@@ -19,43 +19,58 @@ int stringtoint(string s)
     return num;
 }
 
-//逆波兰表达式求值
-int evalRPN(vector<string>& tokens)
+// 逆波兰表达式求值
+int evalRPN(vector<string> &tokens)
 {
     stack<int> st;
     for (int i = 0; i < tokens.size(); i++)
     {
         if (tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/")
         {
-            int right = st.top(); st.pop();
-            int left = st.top(); st.pop();
+            int right = st.top();
+            st.pop();
+            int left = st.top();
+            st.pop();
             switch (tokens[i][0])
             {
-            case '+': st.push(left + right); break;
-            case '-': st.push(left - right); break;
-            case '*': st.push(left * right); break;
-            case '/': st.push(left / right); break;
+            case '+':
+                st.push(left + right);
+                break;
+            case '-':
+                st.push(left - right);
+                break;
+            case '*':
+                st.push(left * right);
+                break;
+            case '/':
+                st.push(left / right);
+                break;
             }
         }
-        else st.push(stringtoint(tokens[i]));
+        else
+            st.push(stringtoint(tokens[i]));
     }
     return st.top();
 }
 
 int Priority(char c)
 {
-	switch(c)
-	{
-		case '+': return 1;
-		case '-': return 1;
-		case '*': return 2;
-		case '/': return 2;
-	}
-	return 0;
+    switch (c)
+    {
+    case '+':
+        return 1;
+    case '-':
+        return 1;
+    case '*':
+        return 2;
+    case '/':
+        return 2;
+    }
+    return 0;
 }
 
-//中缀表达式变成后缀表达式
-string InifToSuffix(string& s)
+// 中缀表达式变成后缀表达式
+string InifToSuffix(string &s)
 {
     string ret = "";
     stack<char> st;
@@ -79,14 +94,13 @@ string InifToSuffix(string& s)
             }
             st.pop();
         }
-        else {
+        else
+        {
             while (!st.empty() && Priority(ch) <= Priority(st.top()))
             {
                 ret += st.top();
                 st.pop();
-
             }
-            st.push(ch);
         }
     }
     while (!st.empty())
@@ -96,9 +110,61 @@ string InifToSuffix(string& s)
     }
     return ret;
 }
+// int main()
+// {
+//     string s = "2*(3+5)+7/1-4";
+//     string ret = InifToSuffix(s);
+//     cout << ret;
+// }
+
+// 为了处理有括号的情况，可以利用递归
+int dfs(string s, int &i)
+{ // 防止递归后回到'('的位置，所以传引用
+    stack<int> st;
+    char op = '+';
+    int res = 0;
+    int num = 0;
+    for (i; i < s.size(); i++)
+    {
+        if (isdigit(s[i])) num = num * 10 + (s[i] - '0'); // 加()防止溢出
+        if (s[i] == '(')
+        {
+            num = dfs(s, ++i);//不能使用后置++因为cannot bind non-const lvalue reference of type 'int&' to an rvalue of type 'int'
+            i++; // 递归出来从')'的下一位再开始
+        }
+        if ((!isdigit(s[i]) && s[i] != ' ') || (i == s.size() - 1))
+        {
+            int pre = 0;
+            switch (op)
+            {
+            case '+':st.push(num);break;
+            case '-':st.push(-num);break;
+            case '*':pre = st.top();st.pop();st.push(num * pre);break;
+            case '/':pre = st.top();st.pop();st.push(pre / num);break;
+            }
+            op = s[i];
+            num = 0;
+        }
+        if (s[i] == ')') break;
+    }
+    while (!st.empty())
+    {
+        res += st.top();
+        st.pop();
+    }
+    return res;
+}
+
+// 用栈实现基本计算器
+int calculate(string s)
+{
+    int begin = 0;
+    return dfs(s, begin);
+}
+
 int main()
 {
-    string s = "2*(3+5)+7/1-4";
-    string ret = InifToSuffix(s);
-    cout << ret;
+    string s = "-2  +(   3*5)-4";
+    cout << calculate(s);
+    return 0;
 }
