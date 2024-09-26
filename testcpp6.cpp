@@ -9,43 +9,43 @@
 #include <cmath>
 using namespace std;
 
-//洛谷1443 马 https://www.luogu.com.cn/problem/P1443
-// const int dx[8] = {-1, -2, -2, -1, 1, 2, 2, 1};
-// const int dy[8] = {2, 1, -1, -2, 2, 1, -1, -2}; // 8个方向
-// queue<pair<int, int>> q;
-// int f[500][500];    // 存步数
-// bool vis[500][500]; // 走没走过
-// int main()
-// {
-//     int n, m, x, y;
-//     memset(f, -1, sizeof(f));
-//     memset(vis, false, sizeof(vis));
-//     cin >> n >> m >> x >> y;
-//     f[x][y] = 0;
-//     vis[x][y] = true;
-//     q.push(make_pair(x, y));
-//     while (!q.empty())
-//     {
-//         int xx = q.front().first, yy = q.front().second;
-//         q.pop(); // 取队首并出队
-//         for (int i = 0; i < 8; i++)
-//         {
-//             int u = xx + dx[i], v = yy + dy[i];
-//             if (u < 1 || u > n || v < 1 || v > m || vis[u][v])
-//                 continue; // 出界或走过就不走
-//             vis[u][v] = true;
-//             q.push(make_pair(u, v));
-//             f[u][v] = f[xx][yy] + 1;
-//         }
-//     }
-//     for (int i = 1; i <= n; i++)
-//     {
-//         for (int j = 1; j <= m; j++)
-//             printf("%-5d", f[i][j]);
-//         printf("\n");
-//     }
-//     return 0;
-// }
+// 洛谷1443 马 https://www.luogu.com.cn/problem/P1443
+//  const int dx[8] = {-1, -2, -2, -1, 1, 2, 2, 1};
+//  const int dy[8] = {2, 1, -1, -2, 2, 1, -1, -2}; // 8个方向
+//  queue<pair<int, int>> q;
+//  int f[500][500];    // 存步数
+//  bool vis[500][500]; // 走没走过
+//  int main()
+//  {
+//      int n, m, x, y;
+//      memset(f, -1, sizeof(f));
+//      memset(vis, false, sizeof(vis));
+//      cin >> n >> m >> x >> y;
+//      f[x][y] = 0;
+//      vis[x][y] = true;
+//      q.push(make_pair(x, y));
+//      while (!q.empty())
+//      {
+//          int xx = q.front().first, yy = q.front().second;
+//          q.pop(); // 取队首并出队
+//          for (int i = 0; i < 8; i++)
+//          {
+//              int u = xx + dx[i], v = yy + dy[i];
+//              if (u < 1 || u > n || v < 1 || v > m || vis[u][v])
+//                  continue; // 出界或走过就不走
+//              vis[u][v] = true;
+//              q.push(make_pair(u, v));
+//              f[u][v] = f[xx][yy] + 1;
+//          }
+//      }
+//      for (int i = 1; i <= n; i++)
+//      {
+//          for (int j = 1; j <= m; j++)
+//              printf("%-5d", f[i][j]);
+//          printf("\n");
+//      }
+//      return 0;
+//  }
 
 // queue<int> q, q1;
 // int a[401][401], ans[401][401];
@@ -88,54 +88,142 @@ using namespace std;
 //     return 0;
 // }
 
-//leetcode 797. 所有可能的路径
-//98. 所有可达路径 https://kamacoder.com/problempage.php?pid=1170
-vector<vector<int>> ret;
-vector<int> path;
-void dfs(const vector<list<int>> &graph, int x, int N)
-{
-    if (x == N)
-    {
-        ret.push_back(path);
-        return;
-    }
-    auto it = graph[x].begin();
-    while (it != graph[x].end())
-    {
-        path.push_back(*it);
-        dfs(graph, *it, N);
-        path.pop_back();
-        ++it;
-    }
-    // for(int i:graph[x])
-    // {
-    //     path.push_back(i);
-    //     dfs(graph,i,N);
-    //     path.pop_back();
-    // }
-}
+// leetcode 797. 所有可能的路径
+// 98. 所有可达路径 https://kamacoder.com/problempage.php?pid=1170
+//  vector<vector<int>> ret;
+//  vector<int> path;
+//  void dfs(const vector<list<int>> &graph, int x, int N)
+//  {
+//      if (x == N)
+//      {
+//          ret.push_back(path);
+//          return;
+//      }
+//      auto it = graph[x].begin();
+//      while (it != graph[x].end())
+//      {
+//          path.push_back(*it);
+//          dfs(graph, *it, N);
+//          path.pop_back();
+//          ++it;
+//      }
+//      // for(int i:graph[x])
+//      // {
+//      //     path.push_back(i);
+//      //     dfs(graph,i,N);
+//      //     path.pop_back();
+//      // }
+//  }
 
-int main()
-{
-    int N, M, s, t;
-    cin >> N >> M;
-    vector<list<int>> graph(N + 1);
-    while (M--)
-    {
-        cin >> s >> t;
-        graph[s].push_back(t);
-    }
-    path.push_back(1);
-    dfs(graph, 1, N);
-    if (ret.size() == 0) cout << -1 << endl;
-    for (int i = 0; i < ret.size(); i++)
-    {
-        for (int j = 0; j < ret[i].size(); j++)
-        {
-            cout << ret[i][j];
-            if (j != ret[i].size() - 1) cout << " ";
-        }
-        if (i != ret.size() - 1) cout << endl;
-    }
-    return 0;
-}
+// int main()
+// {
+//     int N, M, s, t;
+//     cin >> N >> M;
+//     vector<list<int>> graph(N + 1);
+//     while (M--)
+//     {
+//         cin >> s >> t;
+//         graph[s].push_back(t);
+//     }
+//     path.push_back(1);
+//     dfs(graph, 1, N);
+//     if (ret.size() == 0) cout << -1 << endl;
+//     for (int i = 0; i < ret.size(); i++)
+//     {
+//         for (int j = 0; j < ret[i].size(); j++)
+//         {
+//             cout << ret[i][j];
+//             if (j != ret[i].size() - 1) cout << " ";
+//         }
+//         if (i != ret.size() - 1) cout << endl;
+//     }
+//     return 0;
+// }
+
+// 99. 岛屿数量 https://kamacoder.com/problempage.php?pid=1171(acm)
+// 200. 岛屿数量 https://leetcode.cn/problems/number-of-islands/description/
+
+
+//深度优先搜索版本acm
+
+//int dx[4] = {0, 0, -1, 1};
+//int dy[4] = {1, -1, 0, 0};
+//int ret = 0;
+
+//void dfs(vector<vector<int>> &grid, vector<vector<bool>> &visited, int x, int y)
+//{
+    //if (visited[x][y] || grid[x][y] == 0)
+        //return;
+    //for (int i = 0; i < 4; i++)
+    //{
+        //visited[x][y] = true;
+        //int nextx = x + dx[i];
+        //int nexty = y + dy[i];
+        //if (nextx >= grid.size() || nextx < 0 || nexty >= grid[0].size() || nexty < 0)
+            //continue;
+        //;
+        //dfs(grid, visited, nextx, nexty);
+    //}
+//}
+
+//int main()
+//{
+    //int N, M;
+    //cin >> N >> M;
+    //vector<vector<int>> grid(N, vector<int>(M, 0));
+    //vector<vector<bool>> visited(N, vector<bool>(M, false));
+    //for (int i = 0; i < N; i++)
+    //{
+        //for (int j = 0; j < M; j++)
+        //{
+            //cin >> grid[i][j];
+        //}
+    //}
+    //for (int i = 0; i < N; i++)
+    //{
+        //for (int j = 0; j < M; j++)
+        //{
+            //if (visited[i][j] == false && grid[i][j] == 1)
+            //{
+                //ret++;
+                //dfs(grid, visited, i, j);
+            //}
+        //}
+    //}
+    //cout << ret;
+    //return 0;
+//}
+
+//leetcode深度优先搜索版本
+
+
+//class Solution {
+//private:
+    //int dx[4] = {0, 0, -1, 1};
+    //int dy[4] = {1, -1, 0, 0};
+    //int ret = 0;
+    //void dfs(vector<vector<char>>& grid, vector<vector<bool>>& visited, int x, int y) {
+        //if (visited[x][y] || grid[x][y] == '0')return;
+        //for (int i = 0; i < 4; i++) {
+            //visited[x][y] = true;
+            //int nextx = x + dx[i];
+            //int nexty = y + dy[i];
+            //if (nextx >= grid.size() || nextx < 0 || nexty >= grid[0].size() || nexty < 0) continue;
+            //dfs(grid, visited, nextx, nexty);
+        //}
+    //}
+
+//public:
+    //int numIslands(vector<vector<char>>& grid) {
+        //vector<vector<bool>> visited(grid.size(),vector<bool>(grid[0].size(), false));
+        //for (int i = 0; i < grid.size(); i++) {
+            //for (int j = 0; j < grid[i].size(); j++) {
+                //if (visited[i][j] == false && grid[i][j] == '1') {
+                    //ret++;
+                    //dfs(grid, visited, i, j);
+                //}
+            //}
+        //}
+        //return ret;
+    //}
+//};
