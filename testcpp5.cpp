@@ -4,8 +4,6 @@
 #include <stack>
 using namespace std;
 
-#include <bits/stdc++.h>
-
 // 将字符串转为十进制整数
 int stringtoint(string s)
 {
@@ -212,7 +210,8 @@ string removebs(string &s)
 // 为了处理有括号的情况，可以利用递归
 double dfs(string s, int &i)
 { // 防止递归后回到'('的位置，所以传引用
-    s.erase(remove(s.begin(), s.end(), ' '), s.end());
+    //s.erase(remove(s.begin(), s.end(), ' '), s.end());
+    s = removebs(s);
     stack<double> st;
     char op = '+';
     double res = 0;
@@ -285,9 +284,9 @@ double calculate(string s)
     int begin = 0;
     return dfs(s, begin);
 }
-// int main()
-// {
-//     string s = "-2.5+(3*5)-4";
-//     cout << calculate(s);
-//     return 0;
-// }
+int main()
+{
+    string s = "-2.   5  +  (3   *5 )-  4  ";
+    cout << calculate(s);
+    return 0;
+}
