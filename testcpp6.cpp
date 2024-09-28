@@ -143,26 +143,118 @@ using namespace std;
 // 99. 岛屿数量 https://kamacoder.com/problempage.php?pid=1171(acm)
 // 200. 岛屿数量 https://leetcode.cn/problems/number-of-islands/description/
 
+// 深度优先搜索版本acm
 
-//深度优先搜索版本acm
+// int dx[4] = {0, 0, -1, 1};
+// int dy[4] = {1, -1, 0, 0};
+// int ret = 0;
+
+// void dfs(vector<vector<int>> &grid, vector<vector<bool>> &visited, int x, int y)
+//{
+// if (visited[x][y] || grid[x][y] == 0)
+// return;
+// for (int i = 0; i < 4; i++)
+//{
+// visited[x][y] = true;
+// int nextx = x + dx[i];
+// int nexty = y + dy[i];
+// if (nextx >= grid.size() || nextx < 0 || nexty >= grid[0].size() || nexty < 0)
+// continue;
+//;
+// dfs(grid, visited, nextx, nexty);
+//}
+//}
+
+// int main()
+//{
+// int N, M;
+// cin >> N >> M;
+// vector<vector<int>> grid(N, vector<int>(M, 0));
+// vector<vector<bool>> visited(N, vector<bool>(M, false));
+// for (int i = 0; i < N; i++)
+//{
+// for (int j = 0; j < M; j++)
+//{
+// cin >> grid[i][j];
+//}
+//}
+// for (int i = 0; i < N; i++)
+//{
+// for (int j = 0; j < M; j++)
+//{
+// if (visited[i][j] == false && grid[i][j] == 1)
+//{
+// ret++;
+// dfs(grid, visited, i, j);
+//}
+//}
+//}
+// cout << ret;
+// return 0;
+//}
+
+// leetcode深度优先搜索版本
+
+// class Solution {
+// private:
+// int dx[4] = {0, 0, -1, 1};
+// int dy[4] = {1, -1, 0, 0};
+// int ret = 0;
+// void dfs(vector<vector<char>>& grid, vector<vector<bool>>& visited, int x, int y) {
+// if (visited[x][y] || grid[x][y] == '0')return;
+// for (int i = 0; i < 4; i++) {
+// visited[x][y] = true;
+// int nextx = x + dx[i];
+// int nexty = y + dy[i];
+// if (nextx >= grid.size() || nextx < 0 || nexty >= grid[0].size() || nexty < 0) continue;
+// dfs(grid, visited, nextx, nexty);
+//}
+//}
+
+// public:
+// int numIslands(vector<vector<char>>& grid) {
+// vector<vector<bool>> visited(grid.size(),vector<bool>(grid[0].size(), false));
+// for (int i = 0; i < grid.size(); i++) {
+// for (int j = 0; j < grid[i].size(); j++) {
+// if (visited[i][j] == false && grid[i][j] == '1') {
+// ret++;
+// dfs(grid, visited, i, j);
+//}
+//}
+//}
+// return ret;
+//}
+//};
+
+// 广度优先搜索版本acm
 
 //int dx[4] = {0, 0, -1, 1};
 //int dy[4] = {1, -1, 0, 0};
 //int ret = 0;
 
-//void dfs(vector<vector<int>> &grid, vector<vector<bool>> &visited, int x, int y)
+//void bfs(vector<vector<int>> &grid, vector<vector<bool>> &visited, int x, int y)
 //{
-    //if (visited[x][y] || grid[x][y] == 0)
-        //return;
-    //for (int i = 0; i < 4; i++)
+    //queue<pair<int, int>> q;
+    //q.push({x, y});
+    //visited[x][y] = true;
+    //while (!q.empty())
     //{
-        //visited[x][y] = true;
-        //int nextx = x + dx[i];
-        //int nexty = y + dy[i];
-        //if (nextx >= grid.size() || nextx < 0 || nexty >= grid[0].size() || nexty < 0)
-            //continue;
-        //;
-        //dfs(grid, visited, nextx, nexty);
+        //pair<int, int> cur = q.front();
+        //q.pop();
+        //int curx = cur.first;
+        //int cury = cur.second;
+        //for (int i = 0; i < 4; i++)
+        //{
+            //int nextx = curx + dx[i];
+            //int nexty = cury + dy[i];
+            //if (nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size())
+                //continue;
+            //if (visited[nextx][nexty] == false && grid[nextx][nexty] == 1)
+            //{
+                //q.push({nextx, nexty});
+                //visited[nextx][nexty] = true;
+            //}
+        //}
     //}
 //}
 
@@ -186,44 +278,142 @@ using namespace std;
             //if (visited[i][j] == false && grid[i][j] == 1)
             //{
                 //ret++;
-                //dfs(grid, visited, i, j);
+                //bfs(grid, visited, i, j);
             //}
         //}
     //}
-    //cout << ret;
+    //cout << ret << endl;
     //return 0;
 //}
 
-//leetcode深度优先搜索版本
+//leetcode广度优先搜索版本
+
+// class Solution {
+// private:
+//     int dx[4] = {0, 0, -1, 1};
+//     int dy[4] = {1, -1, 0, 0};
+//     int ret = 0;
+//     void bfs(vector<vector<char>>& grid, vector<vector<bool>>& visited, int x, int y) {
+//         queue<pair<int, int>> q;
+//         q.push({x,y});
+//         visited[x][y] = true;
+//         while (!q.empty()) {
+//             pair<int, int> cur = q.front(); q.pop();
+//             int curx = cur.first;
+//             int cury = cur.second;
+//             for (int i = 0; i < 4; i++) {
+//                 int nextx = curx + dx[i];
+//                 int nexty = cury + dy[i];
+//                 if (nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size()) continue;
+//                 if (visited[nextx][nexty] == false &&
+//                     grid[nextx][nexty] == '1') {
+//                     q.push({nextx, nexty});
+//                     visited[nextx][nexty] = true;
+//                 }
+//             }
+//         }
+//     }
+
+// public:
+//     int numIslands(vector<vector<char>>& grid) {
+//         vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
+//         for (int i = 0; i < grid.size(); i++) {
+//             for (int j = 0; j < grid[i].size(); j++) {
+//                 if (visited[i][j] == false && grid[i][j] == '1') {
+//                     ret++;
+//                     bfs(grid, visited, i, j);
+//                 }
+//             }
+//         }
+//         return ret;
+//     }
+// };
 
 
-//class Solution {
-//private:
-    //int dx[4] = {0, 0, -1, 1};
-    //int dy[4] = {1, -1, 0, 0};
-    //int ret = 0;
-    //void dfs(vector<vector<char>>& grid, vector<vector<bool>>& visited, int x, int y) {
-        //if (visited[x][y] || grid[x][y] == '0')return;
-        //for (int i = 0; i < 4; i++) {
-            //visited[x][y] = true;
-            //int nextx = x + dx[i];
-            //int nexty = y + dy[i];
-            //if (nextx >= grid.size() || nextx < 0 || nexty >= grid[0].size() || nexty < 0) continue;
-            //dfs(grid, visited, nextx, nexty);
-        //}
-    //}
+//695. 岛屿的最大面积 https://leetcode.cn/problems/max-area-of-island/description/
+//100. 岛屿的最大面积 https://kamacoder.com/problempage.php?pid=1172
 
-//public:
-    //int numIslands(vector<vector<char>>& grid) {
-        //vector<vector<bool>> visited(grid.size(),vector<bool>(grid[0].size(), false));
-        //for (int i = 0; i < grid.size(); i++) {
-            //for (int j = 0; j < grid[i].size(); j++) {
-                //if (visited[i][j] == false && grid[i][j] == '1') {
-                    //ret++;
-                    //dfs(grid, visited, i, j);
-                //}
-            //}
-        //}
-        //return ret;
-    //}
-//};
+//dfs
+
+// class Solution {
+// private:
+//     int dx[4] = {0, 0, -1, 1};
+//     int dy[4] = {1, -1, 0, 0};
+//     int count;
+//     void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int x, int y) {
+//         for (int i = 0; i < 4; i++) {
+//             int nextx = x + dx[i];
+//             int nexty = y + dy[i];
+//             if (nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size()) continue;
+//             if (visited[nextx][nexty] == false && grid[nextx][nexty] == 1) {
+//                 count++;
+//                 visited[nextx][nexty] = true;
+//                 dfs(grid, visited, nextx, nexty);
+//             }
+//         }
+//     }
+
+// public:
+//     int maxAreaOfIsland(vector<vector<int>>& grid) {
+//         vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
+//         int ret = 0;
+//         for (int i = 0; i < grid.size(); i++) {
+//             for (int j = 0; j < grid[i].size(); j++) {
+//                 if (visited[i][j] == false && grid[i][j] == 1) {
+//                     count = 1;
+//                     visited[i][j] = true;
+//                     dfs(grid, visited, i, j);
+//                     ret = max(ret, count);
+//                 }
+//             }
+//         }
+//         return ret;
+//     }
+// };
+
+//bfs
+
+// class Solution {
+// private:
+//     int dx[4] = {0, 0, -1, 1};
+//     int dy[4] = {1, -1, 0, 0};
+//     int count;
+//     void bfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int x, int y) {
+//         queue<pair<int, int>> q;
+//         q.push({x,y});
+//         visited[x][y] = true;
+//         count++;
+//         while (!q.empty()) {
+//             pair<int, int> cur = q.front(); q.pop();
+//             int curx = cur.first;
+//             int cury = cur.second;
+//             for (int i = 0; i < 4; i++) {
+//                 int nextx = curx + dx[i];
+//                 int nexty = cury + dy[i];
+//                 if (nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size()) continue;
+//                 if (visited[nextx][nexty] == false &&
+//                     grid[nextx][nexty] == 1) {
+//                     q.push({nextx, nexty});
+//                     count++;
+//                     visited[nextx][nexty] = true;
+//                 }
+//             }
+//         }
+//     }
+
+// public:
+//      int maxAreaOfIsland(vector<vector<int>>& grid){
+//         vector<vector<bool>> visited(grid.size(), vector<bool>(grid[0].size(), false));
+//         int ret = 0;
+//         for (int i = 0; i < grid.size(); i++) {
+//             for (int j = 0; j < grid[i].size(); j++) {
+//                 if (visited[i][j] == false && grid[i][j] == 1) {
+//                     count = 0;
+//                     bfs(grid, visited, i, j);
+//                     ret = max(ret,count);
+//                 }
+//             }
+//         }
+//         return ret;
+//     }
+// };
