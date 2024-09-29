@@ -2,8 +2,9 @@
 #include <vector>
 #include <string>
 #include <stack>
+#include <math.h>
 using namespace std;
-
+string removebs(string &s);
 // 将字符串转为十进制整数
 int stringtoint(string s)
 {
@@ -75,15 +76,16 @@ string InifToSuffix(string &s)
 {
     string ret = "";
     stack<char> st;
+    s = removebs(s);
     for (int i = 0; i < s.size(); i++)
     {
         char ch = s[i];
-        if (ch == '-' && (i == 0 || !(s[i - 1] >= '0' && s[i - 1] <= '9')))
+        if (ch == '-' && (i == 0 || !((s[i - 1] >= '0' && s[i - 1] <= '9')||(s[i-1]=='.'))))
         {
             ret += ch;
             continue;
         }
-        if (ch >= '0' && ch <= '9')
+        if ((ch >= '0' && ch <= '9')||(ch=='.')) 
         {
             ret += ch;
         }
@@ -195,7 +197,7 @@ string removebs(string &s)
         {
             s[j] = s[i];
             j++;
-        }            
+        }
     }
     s.resize(j);
     return s;
@@ -208,10 +210,8 @@ string removebs(string &s)
 // }
 
 // 为了处理有括号的情况，可以利用递归
-double dfs(string s, int &i)
+double dfs(const string& s, int& i)
 { // 防止递归后回到'('的位置，所以传引用
-    //s.erase(remove(s.begin(), s.end(), ' '), s.end());
-    s = removebs(s);
     stack<double> st;
     char op = '+';
     double res = 0;
@@ -225,7 +225,7 @@ double dfs(string s, int &i)
             if (isdigit(s[i]))
             {
                 if (point != 0 && i - begin > point)
-                    num = num + 0.1 * (s[i] - '0');
+                    num = num + pow(0.1, i-begin-point) * (s[i] - '0');
                 else
                     num = num * 10 + (s[i] - '0'); // 加()防止溢出
             }
@@ -279,14 +279,15 @@ double dfs(string s, int &i)
     return res;
 }
 // 用栈实现基本计算器
-double calculate(string s)
+double calculate(string& s)
 {
     int begin = 0;
+    s = removebs(s);
     return dfs(s, begin);
 }
-int main()
-{
-    string s = "-2.   5  +  (3   *5 )-  4  ";
-    cout << calculate(s);
-    return 0;
-}
+// int main()
+// {
+//     string s = "(   -1.0  5+2.  5)*2.25/2.25";
+//     cout << calculate(s);
+//     return 0;
+// }
