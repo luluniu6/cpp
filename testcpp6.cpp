@@ -7,6 +7,14 @@
 #include <algorithm>
 #include <queue>
 #include <cmath>
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <time.h>
+#include <cstdlib>
+#include <stack>
+#include <map>
+#include <set>
 using namespace std;
 
 // 洛谷1443 马 https://www.luogu.com.cn/problem/P1443
@@ -228,65 +236,65 @@ using namespace std;
 
 // 广度优先搜索版本acm
 
-//int dx[4] = {0, 0, -1, 1};
-//int dy[4] = {1, -1, 0, 0};
-//int ret = 0;
+// int dx[4] = {0, 0, -1, 1};
+// int dy[4] = {1, -1, 0, 0};
+// int ret = 0;
 
-//void bfs(vector<vector<int>> &grid, vector<vector<bool>> &visited, int x, int y)
+// void bfs(vector<vector<int>> &grid, vector<vector<bool>> &visited, int x, int y)
 //{
-    //queue<pair<int, int>> q;
-    //q.push({x, y});
-    //visited[x][y] = true;
-    //while (!q.empty())
-    //{
-        //pair<int, int> cur = q.front();
-        //q.pop();
-        //int curx = cur.first;
-        //int cury = cur.second;
-        //for (int i = 0; i < 4; i++)
-        //{
-            //int nextx = curx + dx[i];
-            //int nexty = cury + dy[i];
-            //if (nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size())
-                //continue;
-            //if (visited[nextx][nexty] == false && grid[nextx][nexty] == 1)
-            //{
-                //q.push({nextx, nexty});
-                //visited[nextx][nexty] = true;
-            //}
-        //}
-    //}
+// queue<pair<int, int>> q;
+// q.push({x, y});
+// visited[x][y] = true;
+// while (!q.empty())
+//{
+// pair<int, int> cur = q.front();
+// q.pop();
+// int curx = cur.first;
+// int cury = cur.second;
+// for (int i = 0; i < 4; i++)
+//{
+// int nextx = curx + dx[i];
+// int nexty = cury + dy[i];
+// if (nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size())
+// continue;
+// if (visited[nextx][nexty] == false && grid[nextx][nexty] == 1)
+//{
+// q.push({nextx, nexty});
+// visited[nextx][nexty] = true;
+//}
+//}
+//}
 //}
 
-//int main()
+// int main()
 //{
-    //int N, M;
-    //cin >> N >> M;
-    //vector<vector<int>> grid(N, vector<int>(M, 0));
-    //vector<vector<bool>> visited(N, vector<bool>(M, false));
-    //for (int i = 0; i < N; i++)
-    //{
-        //for (int j = 0; j < M; j++)
-        //{
-            //cin >> grid[i][j];
-        //}
-    //}
-    //for (int i = 0; i < N; i++)
-    //{
-        //for (int j = 0; j < M; j++)
-        //{
-            //if (visited[i][j] == false && grid[i][j] == 1)
-            //{
-                //ret++;
-                //bfs(grid, visited, i, j);
-            //}
-        //}
-    //}
-    //cout << ret << endl;
-    //return 0;
+// int N, M;
+// cin >> N >> M;
+// vector<vector<int>> grid(N, vector<int>(M, 0));
+// vector<vector<bool>> visited(N, vector<bool>(M, false));
+// for (int i = 0; i < N; i++)
+//{
+// for (int j = 0; j < M; j++)
+//{
+// cin >> grid[i][j];
+//}
+//}
+// for (int i = 0; i < N; i++)
+//{
+// for (int j = 0; j < M; j++)
+//{
+// if (visited[i][j] == false && grid[i][j] == 1)
+//{
+// ret++;
+// bfs(grid, visited, i, j);
+//}
+//}
+//}
+// cout << ret << endl;
+// return 0;
 //}
 
-//leetcode广度优先搜索版本
+// leetcode广度优先搜索版本
 
 // class Solution {
 // private:
@@ -329,11 +337,10 @@ using namespace std;
 //     }
 // };
 
+// 695. 岛屿的最大面积 https://leetcode.cn/problems/max-area-of-island/description/
+// 100. 岛屿的最大面积 https://kamacoder.com/problempage.php?pid=1172
 
-//695. 岛屿的最大面积 https://leetcode.cn/problems/max-area-of-island/description/
-//100. 岛屿的最大面积 https://kamacoder.com/problempage.php?pid=1172
-
-//dfs
+// dfs
 
 // class Solution {
 // private:
@@ -371,7 +378,7 @@ using namespace std;
 //     }
 // };
 
-//bfs
+// bfs
 
 // class Solution {
 // private:
@@ -417,3 +424,186 @@ using namespace std;
 //         return ret;
 //     }
 // };
+
+// int step = 1;
+// int dx[8] = {1, 1, 2, 2, -2, -2, -1, -1};
+// int dy[8] = {2, -2, 1, -1, 1, -1, 2, -2};
+// vector<vector<int>> board(8, vector<int>(8, 0));
+
+// void dfs(vector<vector<int>> board, vector<vector<bool>> visited, int x, int y)
+// {
+//     step++;
+//     if (step >= 64)
+//         return;
+//     for (int i = 0; i < 8; i++)
+//     {
+//         int nextx = x + dx[i];
+//         int nexty = y + dy[i];
+//         if (nextx < 0 || nextx >= board.size() || nexty < 0 || nexty >= board[0].size())
+//             continue;
+//         if (visited[nextx][nexty] == false)
+//         {
+//             visited[nextx][nexty] = true;
+//             board[nextx][nexty] = step;
+//             dfs(board, visited, nextx, nexty);
+//         }
+//     }
+// }
+
+// int main()
+// {
+//     vector<vector<bool>> visited(8, vector<bool>(8, false));
+//     board[0][0] = 1;
+//     dfs(board, visited, 0, 0);
+//     for (int i = 0; i < board.size(); i++)
+//     {
+//         for (int j = 0; j < board[0].size(); j++)
+//         {
+//             cout << board[i][j] << "  ";
+//         }
+//         cout << endl;
+//     }
+//     return 0;
+// }
+
+// int dx[8] = { 1, 1, 2, 2, -2, -2, -1, -1 };
+// int dy[8] = { 2, -2, 1, -1, 1, -1, 2, -2 };
+// vector<vector<int>> board(6, vector<int>(6, 0));
+
+// int cot = 0;
+// void dfs(int x, int y,int step)
+// {
+//     board[x][y] = step;
+//     if (step >= 25)
+//     {
+//         for (int i = 1; i < board.size(); i++) {
+//             for (int j = 1; j < board[0].size(); j++) {
+//                 cout << board[i][j] << "   ";
+//             }
+//             cout << endl;
+//         }
+//         return;
+//     }
+//     for (int i = 0; i < 8; i++)
+//     {
+//         int nextx = x + dx[i];
+//         int nexty = y + dy[i];
+//         if (nextx <= 0 || nextx >= board.size() || nexty <= 0 || nexty >= board[0].size()) continue;
+//         if(board[nextx][nexty]==0)
+//         dfs(nextx, nexty,step+1);
+//     }
+//     cot++;
+//     board[x][y] = 0;
+// }
+// int main()
+// {
+//     //vector<vector<bool>> visited(8, vector<bool>(8, false));
+//     int curx = 0, cury = 0;
+//     cin >> curx >> cury;
+
+//     dfs(1, 1,1);
+//     // for (int i = 1; i < board.size(); i++) {
+//     //     for (int j = 1; j < board[0].size(); j++) {
+//     //         cout << board[i][j] << "  ";
+//     //     }
+//     //     cout << endl;
+//     // }
+//     return 0;
+// }
+
+// #define ROW 5
+// #define COL 5
+
+// int dx[8] = {1, 1, 2, 2, -2, -2, -1, -1};
+// int dy[8] = {2, -2, 1, -1, 1, -1, 2, -2};
+// vector<vector<int>> board(ROW, vector<int>(COL, 0));
+// vector<vector<bool>> visited(ROW, vector<bool>(COL, false));
+// bool have;        // 判断是否有结果
+// bool only = false; // 选择输出结果是否唯一
+// int cot = 0;
+
+// bool in(int x, int y)
+// {
+//     if (x < 0 || x >= ROW || y < 0 || y >= COL)
+//         return false;
+//     return true;
+// }
+
+// void getNext(int x, int y, int *Next)
+// {
+//     for (int i = 0; i < 8; i++)
+//     {
+//         int nextx = x + dx[i];
+//         int nexty = y + dy[i];
+//         if (in(nextx, nexty) && !visited[nextx][nexty])
+//         {
+//             for (int j = 0; j < 8; j++)
+//             {
+//                 int ttx = nextx + dx[j];
+//                 int tty = nexty + dy[j];
+//                 if (in(ttx, tty) && !visited[ttx][tty])
+//                 {
+//                     Next[i]++; // 统计每个移动方向后续点位个数
+//                 }
+//             }
+//         }
+//     }
+// }
+// void printboard()
+// {
+//     for (int i = 0; i < ROW; i++)
+//     {
+//         for (int j = 0; j < COL; j++)
+//         {
+//             printf("%-4d ", board[i][j]);
+//         }
+//         cout << endl;
+//     }
+// }
+
+// void dfs(int x, int y, int step)
+// {
+//     if (have && only)
+//         return;
+//     board[x][y] = step;
+
+//     if (step >= ROW * COL)
+//     {
+//         printboard();
+//         have = true;
+//         cot++;
+//         cout<< endl;
+//         cout<<cot<<endl;
+//         return;
+//     }
+
+//     visited[x][y] = true;
+
+//     int Next[8] = {0};
+//     getNext(x, y, Next);
+
+//     int seq[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+//     sort(seq, seq + 8, [&](int i, int j) -> bool
+//          { return Next[i] < Next[j]; });
+
+//     for (int i = 0; i < 8; i++)
+//     {
+//         int nextx = x + dx[seq[i]];
+//         int nexty = y + dy[seq[i]];
+//         if (in(nextx, nexty) == false)
+//             continue;
+//         if (visited[nextx][nexty] == false)
+//             dfs(nextx, nexty, step + 1);
+//     }
+//     visited[x][y] = false;
+//     board[x][y] = 0;
+// }
+// int main()
+// {
+//     int n, m;
+//     cin >> n >> m;
+
+//     dfs(n, m, 1);
+//     cout << cot;
+//     return 0;
+// }
