@@ -3,6 +3,8 @@
 #include <string>
 #include <stack>
 #include <math.h>
+#include <map>
+
 using namespace std;
 string removebs(string &s);
 // 将字符串转为十进制整数
@@ -291,3 +293,128 @@ double calculate(string& s)
 //     cout << calculate(s);
 //     return 0;
 // }
+
+bool Legitimacy(string s)
+{
+	//判非法符号
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (!isdigit(s[i]) && s[i] != '+'&&s[i] != '-'&&s[i] != '*'&&s[i] != '/'&&s[i] != '('&&s[i] != ')'&&s[i] != '.'&&s[i] != ' ')
+		{
+			printf("Unknown symbol\n");
+			return false;
+		}
+	}
+	//判断表达式是否正确
+	int left_bracket = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		//判括号
+		if (s[i] == '(')
+			left_bracket++;
+		else if (s[i] == ')')
+		{
+			if (left_bracket == 0)
+			{
+				printf("Brackets do not match\n");
+				return false;
+			}
+			left_bracket--;
+		}
+		//特判第一个
+		if (i == 0)
+		{
+			if (s[i] != '+'&&s[i] != '-'&&s[i] != '(' && !isdigit(s[i]))
+			{
+				printf("Operator error\n");
+				return false;
+			}
+		}
+		//特判最后一个
+		else if (i == s.size() - 1)
+		{
+			if (s[i] != ')' && !isdigit(s[i]))
+			{
+				printf("Operator error\n");
+				return false;
+			}
+			if (s[i] == ')'&&s[i - 1] == '(')
+			{
+				printf("Operator error\n");
+				return false;
+			}
+		}
+		//中间字符，枚举ERROR情况
+		else
+		{
+			if (isdigit(s[i]))
+			{
+				if (s[i - 1] == ')' || s[i + 1] == '(')
+				{
+					printf("Operator error\n");
+					return false;
+				}
+			}
+			else if (s[i] == '.')
+			{
+				if (!isdigit(s[i - 1]) || !isdigit(s[i + 1]))
+				{
+					printf("radix point error\n");
+					return false;
+				}
+			}
+			else if (s[i] == '*' || s[i] == '/')
+			{
+				if ((!isdigit(s[i - 1]) && s[i - 1] != ')') || (!isdigit(s[i + 1]) && s[i + 1] != '+'&&s[i + 1] != '-'&&s[i + 1] != '('))
+				{
+					printf("Operator error\n");
+					return false;
+				}
+			}
+			else if (s[i] == '+' || s[i] == '-')
+			{
+				if (isdigit(s[i - 1]) || s[i - 1] == ')')
+				{
+					if (!isdigit(s[i + 1]) && s[i + 1] != '+'&&s[i + 1] != '-')
+					{
+						printf("Operator error\n");
+						return false;
+					}
+				}
+				else
+				{
+					if (!isdigit(s[i + 1]))
+					{
+						printf("#ERROR\n");
+						printf("Operator error\n");
+						return false;
+					}
+				}
+			}
+			else if (s[i] == '(')
+			{
+				if (isdigit(s[i - 1]) || s[i - 1] == ')' || s[i + 1] == '*' || s[i + 1] == '/' || s[i + 1] == ')')
+				{
+					printf("Operator error\n");
+					return false;
+				}
+			}
+			else if (s[i] == ')')
+			{
+				if ((!isdigit(s[i - 1]) && s[i - 1] != ')') || (s[i + 1] != '+'&&s[i + 1] != '-'&&s[i + 1] != '*'&&s[i + 1] != '/'&&s[i + 1] != ')'))
+				{
+					printf("Operator error\n");
+					return false;
+				}
+			}
+		}
+	}
+    return true;
+}
+int main()
+{
+    string s = "(-1.05+2.5)*2.25/2.25";
+    if (Legitimacy(s)) cout << calculate(s);
+    else cout << "Legitimate expression";
+    return 0;
+}
