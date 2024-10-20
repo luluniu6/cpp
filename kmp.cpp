@@ -288,3 +288,30 @@ public:
 //     }
 //     return 0;
 // }
+
+
+// /*串的简单模式匹配：求串t在串s中的位置*/
+// int StrIndex(HString *s, int pos, HString t){
+//     int i,j,start;
+//     if (t.len==0)  return(0);
+//     start=pos; i=start; j=0;
+//     while (i<s->len && j<t.len){
+//         if (s->ch[i]==t.ch[j])  {i++;j++;}
+//         else  {start++; i=start; j=0;}
+//     }
+//     if (j>=t.len) return(start);
+//     else return(-1);
+// } 
+
+// void StrReplace(HString *S, HString T, HString V)
+// {
+//     int i = 0;
+//     int j = StrIndex(S, i, T);
+//     while (j != -1) {
+//         StrDelete(S, j, T.len);
+//         StrInsert(S, j, V);
+//         i = j + V.len;
+//         j = StrIndex(S, i, T);
+//     }
+//     S->len = i;
+// }
