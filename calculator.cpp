@@ -82,12 +82,12 @@ string InifToSuffix(string &s)
     for (int i = 0; i < s.size(); i++)
     {
         char ch = s[i];
-        if (ch == '-' && (i == 0 || !((s[i - 1] >= '0' && s[i - 1] <= '9')||(s[i-1]=='.'))))
+        if (ch == '-' && (i == 0 || !((s[i - 1] >= '0' && s[i - 1] <= '9') || (s[i - 1] == '.'))))
         {
             ret += ch;
             continue;
         }
-        if ((ch >= '0' && ch <= '9')||(ch=='.')) 
+        if ((ch >= '0' && ch <= '9') || (ch == '.'))
         {
             ret += ch;
         }
@@ -212,33 +212,41 @@ string removebs(string &s)
 // }
 
 // 为了处理有括号的情况，可以利用递归
-double dfs(const string& s, int& i)
+double dfs(const string &s, int &i)
 { // 防止递归后回到'('的位置，所以传引用
     stack<double> st;
     char op = '+';
     double res = 0;
     double num = 0;
-    int begin = 0;
-    int point = 0;
+    int flag = 1, point;
     for (i; i < s.size(); i++)
     {
-        while (isdigit(s[i]) || s[i] == '.')
+        if (s[i] < '0' || s[i] > '9')
         {
-            if (isdigit(s[i]))
-            {
-                if (point != 0 && i - begin > point)
-                    num = num + pow(0.1, i-begin-point) * (s[i] - '0');
-                else
-                    num = num * 10 + (s[i] - '0'); // 加()防止溢出
-            }
             if (s[i] == '.')
             {
-                point = i - begin;
+                flag = 0;
+                point = i;
+                continue;
             }
-            if (s[i] == ' ')
-                i++;
-            i++;
+            else
+                flag = 1;
         }
+        else
+        {
+            if (flag == 1)
+            {
+                num = num * 10 + (s[i] - '0');
+                // continue;
+            }
+            else
+            {
+                int x = s[i] - '0';
+                num += x * pow(0.1, i - point);
+                // continue;
+            }
+        }
+
         if (s[i] == '(')
         {
             num = dfs(s, ++i); // 不能使用后置++因为cannot bind non-const lvalue reference of type 'int&' to an rvalue of type 'int'
@@ -268,7 +276,6 @@ double dfs(const string& s, int& i)
             }
             op = s[i];
             num = 0;
-            begin = i;
         }
         if (s[i] == ')')
             break;
@@ -281,140 +288,140 @@ double dfs(const string& s, int& i)
     return res;
 }
 // 用栈实现基本计算器
-double calculate(string& s)
+double calculate(string &s)
 {
     int begin = 0;
     s = removebs(s);
     return dfs(s, begin);
 }
-// int main()
-// {
-//     string s = "(   -1.0  5+2.  5)*2.25/2.25";
-//     cout << calculate(s);
-//     return 0;
-// }
+int main()
+{
+    string s = "2.5*3+260.72*3/10";
+    cout << calculate(s);
+    return 0;
+}
 
 bool Legitimacy(string s)
 {
-	//判非法符号
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (!isdigit(s[i]) && s[i] != '+'&&s[i] != '-'&&s[i] != '*'&&s[i] != '/'&&s[i] != '('&&s[i] != ')'&&s[i] != '.'&&s[i] != ' ')
-		{
-			printf("Unknown symbol\n");
-			return false;
-		}
-	}
-	//判断表达式是否正确
-	int left_bracket = 0;
-	for (int i = 0; i < s.size(); i++)
-	{
-		//判括号
-		if (s[i] == '(')
-			left_bracket++;
-		else if (s[i] == ')')
-		{
-			if (left_bracket == 0)
-			{
-				printf("Brackets do not match\n");
-				return false;
-			}
-			left_bracket--;
-		}
-		//特判第一个
-		if (i == 0)
-		{
-			if (s[i] != '+'&&s[i] != '-'&&s[i] != '(' && !isdigit(s[i]))
-			{
-				printf("Operator error\n");
-				return false;
-			}
-		}
-		//特判最后一个
-		else if (i == s.size() - 1)
-		{
-			if (s[i] != ')' && !isdigit(s[i]))
-			{
-				printf("Operator error\n");
-				return false;
-			}
-			if (s[i] == ')'&&s[i - 1] == '(')
-			{
-				printf("Operator error\n");
-				return false;
-			}
-		}
-		//中间字符，枚举ERROR情况
-		else
-		{
-			if (isdigit(s[i]))
-			{
-				if (s[i - 1] == ')' || s[i + 1] == '(')
-				{
-					printf("Operator error\n");
-					return false;
-				}
-			}
-			else if (s[i] == '.')
-			{
-				if (!isdigit(s[i - 1]) || !isdigit(s[i + 1]))
-				{
-					printf("radix point error\n");
-					return false;
-				}
-			}
-			else if (s[i] == '*' || s[i] == '/')
-			{
-				if ((!isdigit(s[i - 1]) && s[i - 1] != ')') || (!isdigit(s[i + 1]) && s[i + 1] != '+'&&s[i + 1] != '-'&&s[i + 1] != '('))
-				{
-					printf("Operator error\n");
-					return false;
-				}
-			}
-			else if (s[i] == '+' || s[i] == '-')
-			{
-				if (isdigit(s[i - 1]) || s[i - 1] == ')')
-				{
-					if (!isdigit(s[i + 1]) && s[i + 1] != '+'&&s[i + 1] != '-')
-					{
-						printf("Operator error\n");
-						return false;
-					}
-				}
-				else
-				{
-					if (!isdigit(s[i + 1]))
-					{
-						printf("#ERROR\n");
-						printf("Operator error\n");
-						return false;
-					}
-				}
-			}
-			else if (s[i] == '(')
-			{
-				if (isdigit(s[i - 1]) || s[i - 1] == ')' || s[i + 1] == '*' || s[i + 1] == '/' || s[i + 1] == ')')
-				{
-					printf("Operator error\n");
-					return false;
-				}
-			}
-			else if (s[i] == ')')
-			{
-				if ((!isdigit(s[i - 1]) && s[i - 1] != ')') || (s[i + 1] != '+'&&s[i + 1] != '-'&&s[i + 1] != '*'&&s[i + 1] != '/'&&s[i + 1] != ')'))
-				{
-					printf("Operator error\n");
-					return false;
-				}
-			}
-		}
-	}
+    // 判非法符号
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (!isdigit(s[i]) && s[i] != '+' && s[i] != '-' && s[i] != '*' && s[i] != '/' && s[i] != '(' && s[i] != ')' && s[i] != '.' && s[i] != ' ')
+        {
+            printf("Unknown symbol\n");
+            return false;
+        }
+    }
+    // 判断表达式是否正确
+    int left_bracket = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        // 判括号
+        if (s[i] == '(')
+            left_bracket++;
+        else if (s[i] == ')')
+        {
+            if (left_bracket == 0)
+            {
+                printf("Brackets do not match\n");
+                return false;
+            }
+            left_bracket--;
+        }
+        // 特判第一个
+        if (i == 0)
+        {
+            if (s[i] != '+' && s[i] != '-' && s[i] != '(' && !isdigit(s[i]))
+            {
+                printf("Operator error\n");
+                return false;
+            }
+        }
+        // 特判最后一个
+        else if (i == s.size() - 1)
+        {
+            if (s[i] != ')' && !isdigit(s[i]))
+            {
+                printf("Operator error\n");
+                return false;
+            }
+            if (s[i] == ')' && s[i - 1] == '(')
+            {
+                printf("Operator error\n");
+                return false;
+            }
+        }
+        // 中间字符，枚举ERROR情况
+        else
+        {
+            if (isdigit(s[i]))
+            {
+                if (s[i - 1] == ')' || s[i + 1] == '(')
+                {
+                    printf("Operator error\n");
+                    return false;
+                }
+            }
+            else if (s[i] == '.')
+            {
+                if (!isdigit(s[i - 1]) || !isdigit(s[i + 1]))
+                {
+                    printf("radix point error\n");
+                    return false;
+                }
+            }
+            else if (s[i] == '*' || s[i] == '/')
+            {
+                if ((!isdigit(s[i - 1]) && s[i - 1] != ')') || (!isdigit(s[i + 1]) && s[i + 1] != '+' && s[i + 1] != '-' && s[i + 1] != '('))
+                {
+                    printf("Operator error\n");
+                    return false;
+                }
+            }
+            else if (s[i] == '+' || s[i] == '-')
+            {
+                if (isdigit(s[i - 1]) || s[i - 1] == ')')
+                {
+                    if (!isdigit(s[i + 1]) && s[i + 1] != '+' && s[i + 1] != '-')
+                    {
+                        printf("Operator error\n");
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!isdigit(s[i + 1]))
+                    {
+                        printf("#ERROR\n");
+                        printf("Operator error\n");
+                        return false;
+                    }
+                }
+            }
+            else if (s[i] == '(')
+            {
+                if (isdigit(s[i - 1]) || s[i - 1] == ')' || s[i + 1] == '*' || s[i + 1] == '/' || s[i + 1] == ')')
+                {
+                    printf("Operator error\n");
+                    return false;
+                }
+            }
+            else if (s[i] == ')')
+            {
+                if ((!isdigit(s[i - 1]) && s[i - 1] != ')') || (s[i + 1] != '+' && s[i + 1] != '-' && s[i + 1] != '*' && s[i + 1] != '/' && s[i + 1] != ')'))
+                {
+                    printf("Operator error\n");
+                    return false;
+                }
+            }
+        }
+    }
     return true;
 }
-int main()
-{
-    string s = "(-1.05+2.5)*2.25/2.25";
-    if (Legitimacy(s)) cout << calculate(s);
-    else cout << "Legitimate expression";
-    return 0;
-}
+// int main()
+// {
+//     string s = "(-1.05+2.5)*2.25/2.25";
+//     if (Legitimacy(s)) cout << calculate(s);
+//     else cout << "Legitimate expression";
+//     return 0;
+// }
