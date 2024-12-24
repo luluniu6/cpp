@@ -863,84 +863,595 @@
 //     }
 // }
 
-#define MAXVEX 20
-typedef char Vextype;
-typedef struct
-{
-    int arcs[MAXVEX + 1][MAXVEX + 1];
-    Vextype vex[MAXVEX + 1];
-    int vexnum;
-    int arcnum;
-} AdjMatrix;
-#include <stdio.h>
+// #define MAXVEX 20
+// typedef char Vextype;
+// typedef struct
+// {
+//     int arcs[MAXVEX + 1][MAXVEX + 1];
+//     Vextype vex[MAXVEX + 1];
+//     int vexnum;
+//     int arcnum;
+// } AdjMatrix;
+// #include <stdio.h>
 
-void Creat_AdjMatrix(AdjMatrix *G);
-int LocateVex_AdjMatrix(AdjMatrix *G, Vextype v);
-int Path_AdjMatirx(AdjMatrix *G, Vextype v1, Vextype v2);
+// void Creat_AdjMatrix(AdjMatrix *G);
+// int LocateVex_AdjMatrix(AdjMatrix *G, Vextype v);
+// int Path_AdjMatirx(AdjMatrix *G, Vextype v1, Vextype v2);
 
-main()
-{
-    int n, i;
-    Vextype a, b;
-    AdjMatrix gM;
-    Creat_AdjMatrix(&gM);
-    scanf("%d\n", &n);
-    for (i = 0; i < n; i++)
-    {
-        scanf("[%c,%c]", &a, &b);
-        if (Path_AdjMatirx(&gM, a, b) == 1)
-            printf("From %c to %c: YES.\n", a, b);
-        else
-            printf("From %c to %c: NO.\n", a, b);
-    }
-}
+// main()
+// {
+//     int n, i;
+//     Vextype a, b;
+//     AdjMatrix gM;
+//     Creat_AdjMatrix(&gM);
+//     scanf("%d\n", &n);
+//     for (i = 0; i < n; i++)
+//     {
+//         scanf("[%c,%c]", &a, &b);
+//         if (Path_AdjMatirx(&gM, a, b) == 1)
+//             printf("From %c to %c: YES.\n", a, b);
+//         else
+//             printf("From %c to %c: NO.\n", a, b);
+//     }
+// }
 
-void Creat_AdjMatrix(AdjMatrix *G)
-{
-    int i, j, k;
-    char v1, v2;
-    scanf("%d\n", &(G->vexnum));
-    for (i = 1; i <= G->vexnum; i++)
-    {
-        scanf("%c", &(G->vex[i]));
-        for (j = 1; j <= G->vexnum; j++)
-            G->arcs[i][j] = 0;
-    }
-    scanf("%d\n", &(G->arcnum));
-    for (k = 1; k <= G->arcnum; k++)
-    {
-        scanf("<%c,%c>", &v1, &v2);
-        i = LocateVex_AdjMatrix(G, v1);
-        j = LocateVex_AdjMatrix(G, v2);
-        G->arcs[i][j] = 1;
-    }
-}
+// void Creat_AdjMatrix(AdjMatrix *G)
+// {
+//     int i, j, k;
+//     char v1, v2;
+//     scanf("%d\n", &(G->vexnum));
+//     for (i = 1; i <= G->vexnum; i++)
+//     {
+//         scanf("%c", &(G->vex[i]));
+//         for (j = 1; j <= G->vexnum; j++)
+//             G->arcs[i][j] = 0;
+//     }
+//     scanf("%d\n", &(G->arcnum));
+//     for (k = 1; k <= G->arcnum; k++)
+//     {
+//         scanf("<%c,%c>", &v1, &v2);
+//         i = LocateVex_AdjMatrix(G, v1);
+//         j = LocateVex_AdjMatrix(G, v2);
+//         G->arcs[i][j] = 1;
+//     }
+// }
 
-int LocateVex_AdjMatrix(AdjMatrix *G, Vextype v)
-{
-    int i;
-    for (i = 1; i <= G->vexnum; i++)
-        if (G->vex[i] == v)
-            return i;
-    return 0;
-}
-int visited[MAXVEX + 1] = {0};
-int DFS(AdjMatrix *G, int cur, int end)
-{
-    if (cur == end)
-        return 1;
-    visited[cur] = 1;
-    for (int i = 1; i <= G->vexnum; i++)
-        if (G->arcs[cur][i] == 1 && !visited[i])
-            if (DFS(G, i, end))
-                return 1;
-    return 0;
-}
-int Path_AdjMatirx(AdjMatrix *G, Vextype v1, Vextype v2) // 判断两个指定顶点之间是否存在路径。
-{
-    int start = LocateVex_AdjMatrix(G, v1);
-    int end = LocateVex_AdjMatrix(G, v2);
-    for (int i = 1; i <= G->vexnum; i++)
-        visited[i] = 0;
-    return DFS(G, start, end);
-}
+// int LocateVex_AdjMatrix(AdjMatrix *G, Vextype v)
+// {
+//     int i;
+//     for (i = 1; i <= G->vexnum; i++)
+//         if (G->vex[i] == v)
+//             return i;
+//     return 0;
+// }
+// int visited[MAXVEX + 1] = {0};
+// int DFS(AdjMatrix *G, int cur, int end)
+// {
+//     if (cur == end)
+//         return 1;
+//     visited[cur] = 1;
+//     for (int i = 1; i <= G->vexnum; i++)
+//         if (G->arcs[cur][i] == 1 && !visited[i])
+//             if (DFS(G, i, end))
+//                 return 1;
+//     return 0;
+// }
+// int Path_AdjMatirx(AdjMatrix *G, Vextype v1, Vextype v2) // 判断两个指定顶点之间是否存在路径。
+// {
+//     int start = LocateVex_AdjMatrix(G, v1);
+//     int end = LocateVex_AdjMatrix(G, v2);
+//     for (int i = 1; i <= G->vexnum; i++)
+//         visited[i] = 0;
+//     return DFS(G, start, end);
+// }
+
+// #include <iostream>
+// #include <string>
+
+// using namespace std;
+// int hd[100], go[100], nxt[100], cst[100], dis[100], l;
+// void Add(int u, int v, int t)
+// {
+//     nxt[++l] = hd[u], hd[u] = l, go[l] = v, cst[l] = t;
+// }
+// void dfs(int s, int f, int d)
+// {
+//     dis[s] = d;
+//     for (int i = hd[s]; i; i = nxt[i])
+//     {
+//         if (go[i] == f)
+//             continue;
+//         dfs(go[i], s, d + cst[i]);
+//     }
+// }
+// int main()
+// {
+//     int n, m, u, v, w, s = 1, i;
+//     cin >> n;
+//     m = n - 1;
+//     for (i = 1; i <= m; i++)
+//     {
+//         cin >> u >> v >> w;
+//         Add(u, v, w);
+//         Add(v, u, w);
+//     }
+//     dfs(1, 0, 0);
+//     for (i = 2; i <= n; i++)
+//         if (dis[s] < dis[i])
+//             s = i;
+//     dfs(s, 0, 0);
+//     for (i = 1; i <= n; i++)
+//         if (dis[s] < dis[i])
+//             s = i;
+//     printf("%d\n", dis[s] * 10 + (dis[s] + 1) * dis[s] / 2);
+//     return 0;
+// }
+
+// #include <iostream>
+// #include <vector>
+// #include <functional>
+// using namespace std;
+// int M, N, u, v, ans;
+// #define maxn 10010
+// vector<int> G[maxn];
+// bool used[maxn];
+
+// // u表示上一个顶点，dep表示当前寻找第dep+1个结点，s表示起点；
+// void DFS(int u, int dep, int s)
+// {
+//     if (dep == 3)
+//     {
+//         for (int i = 0; i < G[u].size(); i++)
+//         {
+//             int v = G[u][i];
+//             if (!used[v] || v == s)
+//                 ans++;
+//         }
+//         return;
+//     }
+//     else
+//     {
+//         for (int i = 0; i < G[u].size(); i++)
+//         {
+//             int v = G[u][i];
+//             if (!used[v])
+//             {
+//                 used[v] = true;
+//                 DFS(v, dep + 1, s);
+//                 used[v] = false;
+//             }
+//         }
+//     }
+//     return;
+// }
+
+// int main(void)
+// {
+//     cin >> N >> M;
+//     while (M--)
+//     {
+//         cin >> u >> v;
+//         G[u].push_back(v);
+//         G[v].push_back(u);
+//     }
+
+//     memset(used, 0, sizeof used);
+//     for (int i = 1; i <= N; i++)
+//     {
+//         used[i] = true;
+//         DFS(i, 1, i);
+//         used[i] = false;
+//     }
+//     cout << ans;
+//     return 0;
+// }
+
+// #include <iostream>
+// #include <cstring>
+// using namespace std;
+
+// const int N = 1e6;
+// int n, m;
+// int q[N], d[N];
+// int h[N], e[N], ne[N], idx;
+
+// void add(int a, int b)
+// {
+//     e[idx] = b;
+//     ne[idx] = h[a];
+//     h[a] = idx++;
+// }
+// bool topsort()
+// {
+//     int hh = 0, tt = -1;
+//     for (int i = 1; i <= n; i++)
+//         if (!d[i])
+//             q[++tt] = i;
+//     while (hh <= tt)
+//     {
+//         auto t = q[hh++];
+//         for (int i = h[t]; i != -1; i = ne[i])
+//         {
+//             int j = e[i];
+//             d[j]--;
+//             if (d[j] == 0)
+//                 q[++tt] = j;
+//         }
+//     }
+//     return tt == n - 1;
+// }
+// int main()
+// {
+//     memset(h, -1, sizeof h);
+//     cin >> n >> m;
+//     while (m--)
+//     {
+//         int a, b;
+//         cin >> a >> b;
+//         add(a, b);
+//         d[b]++; // b的入度++
+//     }
+//     if (topsort())
+//     {
+//         for (int i = 0; i < n; i++)
+//             cout << q[i] << " ";
+//         puts("");
+//     }
+//     else
+//         puts("-1");
+//     return 0;
+// }
+
+// #include <iostream>
+// #include <cstring>
+// #include <map>
+// #include <queue>
+// using namespace std;
+// const int N = 1e6;
+// int n, m;
+// int h[N], e[N], ne[N], idx;
+// bool st[N] = {false};
+// map<char, int> indexMap;
+// string s;
+// queue<int> q;
+// void add(int a, int b)
+// {
+//     e[idx] = b;
+//     ne[idx] = h[a];
+//     h[a] = idx++;
+// }
+// int getindex(char a)
+// {
+//     return indexMap[a];
+// }
+// void dfs(int u)
+// {
+//     st[u] = true;
+//     cout << s[u] << " ";
+//     for (int i = h[u]; i != -1; i = ne[i])
+//     {
+//         int j = e[i];
+//         if (!st[j])
+//             dfs(j);
+//     }
+// }
+// void bfs(int u)
+// {
+//     st[0] = true;
+//     q.push(0);
+//     cout<<s[u]<<" ";
+//     while (!q.empty())
+//     {
+//         int t = q.front();
+//         q.pop();
+//         for (int i = h[u]; i != -1; i = ne[i])
+//         {
+//             int j = e[i];
+//             if (!st[j])
+//             {
+//                 st[j] = true;
+//                 q.push(j);
+//                 cout<<s[j]<<" ";
+//             }
+//         }
+//     }
+// }
+// int main()
+// {
+//     idx = 0;
+//     memset(h, -1, sizeof h);
+//     cin >> n >> m;
+//     cin >> s;
+//     for (int i = 0; i < s.size(); i++)
+//         indexMap[s[i]] = i;
+//     while (m--)
+//     {
+//         char v1, v2;
+//         cin >> v1 >> v2;
+//         int a = getindex(v1);
+//         int b = getindex(v2);
+//         add(a, b);
+//     }
+//     //dfs(0);
+//     st[N] = {false};
+//     bfs(0);
+//     return 0;
+// }
+
+// #include <iostream>
+// #include <cstring>
+// #include <queue>
+// #include <string>
+// #include <map>
+// using namespace std;
+// const int N = 1e3;
+// int n, m;
+// int h[N], e[N], ne[N], idx;
+// int g[N][N];
+// bool visited[N];
+// map<char, int> index_map;
+// string s;
+// queue<int> q;
+// int ufs[N];
+// int id[N];
+// int od[N];
+// void add(int a, int b)
+// {
+//     e[idx] = b;
+//     ne[idx] = h[a];
+//     h[a] = idx++;
+// }
+// void add2(int a, int b)
+// {
+//     g[a][b] = 1;
+// }
+// int getindex(char a)
+// {
+//     return index_map[a];
+// }
+// void dfs(int u)
+// {
+//     visited[u] = true;
+//     cout << s[u] << " ";
+//     for (int i = h[u]; i != -1; i = ne[i])
+//     {
+//         int j = e[i];
+//         if (!visited[j])
+//             dfs(j);
+//     }
+// }
+// void dfs2(int u)
+// {
+//     visited[u] = true;
+//     cout << s[u] << " ";
+//     for (int i = 0; i < n; i++)
+//         if (g[u][i] != 0 && !visited[i])
+//             dfs2(i);
+// }
+// void bfs(int u)
+// {
+//     q.push(u);
+//     visited[u] = true;
+//     while (!q.empty())
+//     {
+//         int t = q.front();
+//         q.pop();
+//         cout << s[t] << " ";
+//         for (int i = h[t]; i != -1; i = ne[i])
+//         {
+//             int j = e[i];
+//             if (!visited[j])
+//             {
+//                 q.push(j);
+//                 visited[j] = true;
+//             }
+//         }
+//     }
+// }
+// void bfs2(int u)
+// {
+//     q.push(u);
+//     visited[u] = true;
+//     while (!q.empty())
+//     {
+//         int t = q.front();
+//         q.pop();
+//         cout << s[t] << " ";
+//         for (int i = 0; i < n; i++)
+//         {
+//             if (g[t][i] != 0x3f3f3f3f && !visited[i])
+//             {
+//                 visited[i] = true;
+//                 q.push(i);
+//             }
+//         }
+//     }
+// }
+// void degree()
+// {
+//     for(int i = 0; i < n; i++)
+//     {
+//         for(int j = 0 ;j < n;j++)
+//         {
+//             if(g[i][j]!=0x3f3f3f3f)
+//             {
+//                 od[i]++;
+//                 id[j]++;
+//             }
+//         }
+//     }
+//     for(int i =0;i<n;i++)
+//     {
+//         cout<<s[i]<<" "<<od[i]<<" "<<id[i]<<" "<<od[i]+id[i]<<endl;
+//     }
+// }
+// int main()
+// {
+//     memset(h, -1, sizeof h);
+//     idx = 0;
+//     memset(g, 0x3f, sizeof g);
+//     memset(ufs, -1, sizeof ufs);
+//     cin >> n >> m;
+//     cin >> s;
+//     for (int i = 0; i < s.size(); i++)
+//         index_map[s[i]] = i;
+//     while (m--)
+//     {
+//         char v1, v2;
+//         cin >> v1 >> v2;
+//         int a = getindex(v1);
+//         int b = getindex(v2);
+//         add(a, b);
+//         add2(a, b);
+//     }
+//     // dfs(0);
+//     // dfs2(0);
+//     // cout<<endl;
+//     // memset(visited,0,sizeof visited);
+//     // bfs(0);
+//     // bfs2(0);
+//     degree();
+//     dfs2(0);
+//     cout<<endl;
+//     memset(visited,0,sizeof visited);
+//     bfs2(0);
+
+// }
+
+// #include <iostream>
+// #include <cstring>
+// #include <queue>
+// #include <map>
+// using namespace std;
+
+// const int N = 1e6;
+// int n, m;
+// int q[N],d[N];
+// int h[N], e[N], ne[N], idx;
+// map<char, int> index_map;
+// string s;
+// void add(int a, int b)
+// {
+//     e[idx] = b;
+//     ne[idx] = h[a];
+//     h[a] = idx++;
+// }
+// int getIndex(char a)
+// {
+//     return index_map[a];
+// }
+// bool topsort()
+// {
+//     int hh = 0, tt = -1;
+//     for (int i = 0; i < n; i++)
+//         if (!d[i])
+//             q[++tt] = i;
+
+//     while (hh<=tt)
+//     {
+//         auto t = q[hh++];
+//         for (int i = h[t]; i != -1; i = ne[i])
+//         {
+//             int j = e[i];
+//             d[j]--;
+//             if (d[j] == 0) q[++tt] = j;
+//         }
+//     }
+//     return tt == n - 1;
+// }
+// int main()
+// {
+//     memset(h, -1, sizeof h);
+//     cin >> n >> m;
+//     cin >> s;
+//     for (int i = 0; i < n; i++)
+//         index_map[s[i]] = i;
+//     getchar();
+//     while (m--)
+//     {
+//         char v1, v2;
+//         scanf("<%c,%c>", &v1, &v2);
+//         int a = getIndex(v1);
+//         int b = getIndex(v2);
+//         add(a, b);
+//         d[b]++; // b的入度++
+//     }
+//     if (topsort())
+//     {
+//         for (int i = 0; i < n; i++)
+//             cout << s[q[i]] << " ";
+//     }
+//     else
+//         puts("-1");
+//     return 0;
+// }
+
+//已知有向无权图G，求出其拓扑有序序列。(要求：用邻接矩阵存储图，用栈存储度为0的结点。)
+// #include <iostream>
+// #include <cstring>
+// #include <queue>
+// #include <map>
+// #include <stack>
+// using namespace std;
+
+// const int N = 1e3;
+// int n, m;
+// int d[N];
+// stack<int> st;
+// int g[N][N];
+// map<char, int> index_map;
+// string s;
+// string toop;
+// void add(int a, int b)
+// {
+//     g[a][b] = 1;
+// }
+// int getIndex(char a)
+// {
+//     return index_map[a];
+// }
+// bool topsort()
+// {
+
+//     for (int i = 0; i < n; i++)
+//         if (!d[i])
+//             st.push(i);
+
+//     while (!st.empty())
+//     {
+//         int t = st.top();
+//         st.pop();
+//         toop += s[t];
+//         for (int i = 0; i < n; i++)
+//         {
+//             if (g[t][i] != 0x3f3f3f3f)
+//                 d[i]--;
+//             if (g[t][i] != 0x3f3f3f3f && d[i] == 0)
+//                 st.push(i);
+//         }
+//     }
+//     return toop.size() == n;
+// }
+// int main()
+// {
+//     memset(g, 0x3f, sizeof g);
+//     cin >> n >> m;
+//     cin >> s;
+//     for (int i = 0; i < n; i++)
+//         index_map[s[i]] = i;
+//     getchar();
+//     while (m--)
+//     {
+//         char v1, v2;
+//         scanf("<%c,%c>", &v1, &v2);
+//         int a = getIndex(v1);
+//         int b = getIndex(v2);
+//         add(a, b);
+//         d[b]++; // b的入度++
+//     }
+//     if (topsort())
+//         cout << toop;
+//     else
+//         puts("-1");
+//     return 0;
+// }
